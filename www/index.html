@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Audio Mini Games - 100% Barrierefrei für Blinde & Sehbehinderte</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-oled" id="app-body">
+  <div id="sr-announcer" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+  <div id="sr-polite" class="sr-only" aria-live="polite"></div>
+
+  <!-- HEADER -->
+  <header class="game-header">
+    <div class="header-title">
+      <h1>🎮 Audio Mini Games</h1>
+      <span class="sub-badge" id="app-version">v2.1 Mobile • TalkBack</span>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn-icon" id="btn-toggle-tts" aria-label="Sprachausgabe umschalten" onclick="toggleTTS()">🔊</button>
+      <button type="button" class="btn-icon" id="btn-open-settings" aria-label="Einstellungen öffnen" onclick="openSettings()">⚙️</button>
+    </div>
+  </header>
+
+  <!-- HAUPTANSICHT: MENÜ -->
+  <main id="view-menu" class="view-screen active" role="main">
+    <div class="category-tabs" role="tablist" aria-label="Spiel-Kategorien">
+      <button role="tab" aria-selected="true" class="cat-tab active" onclick="selectCategory('all')">Alle Spiele (69)</button>
+      <button role="tab" aria-selected="false" class="cat-tab" onclick="selectCategory('action')">Action & Reaktion (28)</button>
+      <button role="tab" aria-selected="false" class="cat-tab" onclick="selectCategory('logic')">Logik & Gedächtnis (16)</button>
+      <button role="tab" aria-selected="false" class="cat-tab" onclick="selectCategory('nav')">Navigation & Stereo (11)</button>
+      <button role="tab" aria-selected="false" class="cat-tab" onclick="selectCategory('speech')">Sprache & Wissen (9)</button>
+      <button role="tab" aria-selected="false" class="cat-tab" onclick="selectCategory('sim')">Simulation & Spaß (5)</button>
+    </div>
+
+    <div class="game-list-container" id="game-list" role="list" aria-label="Liste der Audiospiele">
+      <!-- Dynamisch befüllt -->
+    </div>
+  </main>
+
+  <!-- SPIEL-ANSICHT -->
+  <section id="view-game" class="view-screen" aria-label="Laufendes Spiel" style="display: none;">
+    <div class="game-hud">
+      <button type="button" class="btn-hud" onclick="leaveGame()" aria-label="Spiel beenden und zurück zum Menü">◀ Menü</button>
+      <div class="hud-center">
+        <h2 id="game-hud-title">Spielname</h2>
+        <div class="score-display" id="game-hud-score">Punkte: 0</div>
+      </div>
+      <button type="button" class="btn-hud" onclick="repeatTutorial()" aria-label="Anleitung nochmals anhören">❓ Hilfe</button>
+    </div>
+
+    <div class="visualizer-box" aria-hidden="true">
+      <div class="sound-wave" id="visualizer-bar"></div>
+      <div class="status-msg" id="hud-status">Kopfhörer empfohlen für 3D-Stereo-Sound!</div>
+    </div>
+
+    <!-- Taktile Touch-Steuerflächen für Smartphones -->
+    <div class="touch-control-grid">
+      <button type="button" class="touch-btn touch-left" id="btn-touch-left" aria-label="Links steuern">
+        <span class="touch-icon">◀</span>
+        <span class="touch-label">LINKS</span>
+      </button>
+      <button type="button" class="touch-btn touch-right" id="btn-touch-right" aria-label="Rechts steuern">
+        <span class="touch-icon">▶</span>
+        <span class="touch-label">RECHTS</span>
+      </button>
+      <button type="button" class="touch-btn touch-action" id="btn-touch-action" aria-label="Aktion ausführen / Bestätigen">
+        <span class="touch-icon">🔘</span>
+        <span class="touch-label">AKTION / BESTÄTIGEN</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- EINSTELLUNGEN MODAL -->
+  <div id="modal-settings" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title" style="display: none;">
+    <div class="modal-card">
+      <h2 id="settings-title">⚙️ Audio- & Steuerungs-Optionen</h2>
+      <div class="setting-group">
+        <label for="set-volume-effects">Lautstärke Soundeffekte (Stereo):</label>
+        <input type="range" id="set-volume-effects" min="0" max="100" value="80" onchange="updateAudioSettings()">
+      </div>
+      <div class="setting-group">
+        <label for="set-volume-tts">Lautstärke Sprachassistent:</label>
+        <input type="range" id="set-volume-tts" min="0" max="100" value="90" onchange="updateAudioSettings()">
+      </div>
+      <div class="setting-group">
+        <label for="set-speech-rate">Sprechgeschwindigkeit:</label>
+        <input type="range" id="set-speech-rate" min="5" max="20" value="11" onchange="updateAudioSettings()">
+      </div>
+      <div class="setting-group">
+        <label>
+          <input type="checkbox" id="set-vibrate" checked onchange="updateAudioSettings()">
+          Haptisches Vibrations-Feedback bei Aktionen
+        </label>
+      </div>
+      <button type="button" class="btn-primary" onclick="closeSettings()">Fertig & Speichern</button>
+    </div>
+  </div>
+
+  <script src="audio_engine.js"></script>
+  <script src="games.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Audio Mini Games</string>
+    <string name="title_activity_main">Audio Mini Games</string>
+    <string name="package_name">de.lauri.minigames</string>
+    <string name="custom_url_scheme">de.lauri.minigames</string>
+</resources>

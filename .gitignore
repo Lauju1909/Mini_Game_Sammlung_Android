@@ -1,0 +1,34 @@
+﻿# Node / NPM
+node_modules/
+package-lock.json.bak
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Android Build outputs & caches
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/*.iml
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+
+# Keystores & sensitive credentials (NEVER commit to git!)
+*.keystore
+*.jks
+keystore_credentials*.txt
+*.p12
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# General logs
+*.log

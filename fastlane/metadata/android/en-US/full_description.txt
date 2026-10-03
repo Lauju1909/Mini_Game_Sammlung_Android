@@ -1,0 +1,9 @@
+﻿Audio Mini Games is a rich collection of accessible audio-based mini games playable entirely through sound, spatial cues, and haptics without requiring visual feedback.
+
+Features:
+- Over 60 mini-games across Action & Reaction, Logic & Memory, 3D Stereo Navigation, Trivia, and Simulation
+- 100% playable with TalkBack or built-in speech engine
+- 3D spatial stereo sound design
+- Haptic feedback support
+- Local high scores and achievement tracking
+- 100% free, no ads, no trackers, fully playable offline

@@ -1,0 +1,9 @@
+﻿Audio Mini Games ist eine umfangreiche Sammlung von barrierefreien Audiogames, die ohne visuelles Display allein über Gehör, Audio-Feedback und Haptik gespielt werden können.
+
+Features:
+- Über 60 verschiedene Minispiele in den Kategorien Action, Logik, Navigation, Sprache und Simulation
+- 100% spielbar mit TalkBack oder integrierter Sprachausgabe
+- 3D-Binauraler Stereosound für akustische Ortungs- und Reaktionsspiele
+- Haptisches Feedback (Vibration)
+- Bestenlisten, Statistiken und Highscores
+- Keine Werbung, kein Tracking, komplett offline spielbar
