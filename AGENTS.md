@@ -28,3 +28,8 @@
 ## F-Droid Metadata
 - Maintain Store graphics and descriptions in `fastlane/metadata/android/de-DE/` and `en-US/`.
 - F-Droid recipe file is located in `fdroid/`.
+
+## Automatic F-Droid & Package Source Updates
+- GitHub Actions automatically compiles the APK, creates the GitHub Release, and triggers Lauju1909/fdroid-repo via PAT_TRIGGER.
+- Lauju's custom F-Droid repository updates within 2 minutes: all users with Neo Store or F-Droid receive the update notification automatically.
+- Always add the new build block to droid/*.yml and update CurrentVersion / CurrentVersionCode for upstream F-Droid (MR !51047).
