@@ -692,7 +692,7 @@ const MINI_GAMES = [
   {
     id: 'audio_fencer',
     title: 'Audio Fechter',
-    cat: 'action',
+    cat: 'speech',
     desc: 'Reagiere im Fechtduell: Pariere feindliche Klingenstöße mit Links und greife mit Rechts an!',
     tutorial: 'Audio Fechter: Klirrt der Degen, pariere sofort mit Links. Ist der Gegner offen, setze den Gegenstoß mit Rechts!',
     init(game) {
@@ -719,7 +719,7 @@ const MINI_GAMES = [
   {
     id: 'audio_lumberjack',
     title: 'Audio Holzfäller',
-    cat: 'action',
+    cat: 'speech',
     desc: 'Hacke den Baumstamm: Drücke Aktion zum Schlagen und weiche fallenden Ästen mit Links/Rechts aus!',
     tutorial: 'Audio Holzfäller: Hacke mit Aktion. Knackt ein Ast links, weiche nach rechts aus. Knackt er rechts, weiche nach links aus!',
     init(game) {
@@ -777,7 +777,7 @@ const MINI_GAMES = [
   {
     id: 'audio_battleship',
     title: 'Audio-Schiffeversenken',
-    cat: 'action',
+    cat: 'logic',
     desc: 'Scanne das Radar nach feindlichen Schiffen und feuere Torpedos ab!',
     tutorial: 'Audio-Schiffeversenken: Bewege das Periskop mit Links und Rechts. Wenn das Pingsignal am stärksten zentriert ist, drücke Aktion!',
     init(game) {
@@ -832,7 +832,7 @@ const MINI_GAMES = [
   {
     id: 'audio_bouncer',
     title: 'Audio-Türsteher',
-    cat: 'action',
+    cat: 'logic',
     desc: 'Prüfe Gäste an der Clubtür: Einlass gewähren mit Rechts, abweisen mit Links!',
     tutorial: 'Audio-Türsteher: Gäste nennen ihr Codewort. Passt die Tonharmonie, lasse sie mit Rechts rein. Klingt es schief, schicke sie mit Links weg!',
     init(game) {
@@ -1084,29 +1084,52 @@ const MINI_GAMES = [
       clearInterval(game.iv);
     }
   },
-  {
+    {
     id: 'audio_sequence',
     title: 'Sound-Folge',
+    title_en: 'Audio Sequence',
     cat: 'logic',
-    desc: 'Präge dir 3 verschiedene Instrumente ein und wähle die richtige Reihenfolge!',
-    tutorial: 'Sound-Folge: Höre drei Töne (Tief, Mittel, Hoch). Drücke die Tasten in exakt derselben Reihenfolge nach!',
+    desc: 'Präge dir die Tonfolge ein und tippe sie in exakt gleicher Reihenfolge nach!',
+    desc_en: 'Memorize the tone sequence and repeat it accurately!',
+    tutorial: 'Sound-Folge: Höre Töne (Links = Tief, Aktion = Mittel, Rechts = Hoch). Wiederhole die Folge!',
+    tutorial_en: 'Audio Sequence: Listen to tones (Left = Low, Action = Mid, Right = High). Repeat the sequence!',
     init(game) {
-      game.score = 0; game.seq = [1, 2, 3];
-      AudioEngine.speak('Präge dir die Reihenfolge ein.');
-      setTimeout(() => AudioEngine.playTone(300, 0.2, 0), 1000);
-      setTimeout(() => AudioEngine.playTone(500, 0.2, 0), 1500);
-      setTimeout(() => AudioEngine.playTone(700, 0.2, 0), 2000);
-      game.step = 0;
+      game.score = 0;
+      game.freqs = { left: 300, action: 500, right: 700 };
+      game.keys = ['left', 'action', 'right'];
+      game.nextRound = () => {
+        game.seq = [
+          game.keys[Math.floor(Math.random() * 3)],
+          game.keys[Math.floor(Math.random() * 3)],
+          game.keys[Math.floor(Math.random() * 3)]
+        ];
+        game.step = 0;
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Listen to the sequence.' : 'Präge dir die Reihenfolge ein.');
+        game.seq.forEach((k, idx) => {
+          setTimeout(() => {
+            const pan = k === 'left' ? -0.8 : (k === 'right' ? 0.8 : 0);
+            AudioEngine.playTone(game.freqs[k], 0.22, pan);
+          }, 1000 + idx * 550);
+        });
+      };
+      game.nextRound();
     },
     onAction(game, type) {
-      const pressed = type === 'left' ? 1 : (type === 'action' ? 2 : 3);
+      const pressed = (type === 'up' || type === 'down') ? 'action' : type;
       if (pressed === game.seq[game.step]) {
         game.step++;
-        if (game.step >= 3) {
-          game.score += 300; AudioEngine.playSound('success'); AudioEngine.speak('Folge komplett! +300');
-          game.step = 0;
+        AudioEngine.playTone(game.freqs[pressed] || 500, 0.12, 0);
+        if (game.step >= game.seq.length) {
+          game.score += 350;
+          AudioEngine.playSound('success');
+          AudioEngine.speak(AudioEngine.lang === 'en' ? 'Sequence complete!' : 'Folge komplett!');
+          setTimeout(() => game.nextRound(), 1500);
         }
-      } else { AudioEngine.playSound('error'); game.step = 0; }
+      } else {
+        AudioEngine.playSound('error');
+        game.step = 0;
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Mistake. Try again.' : 'Fehler. Nochmal.');
+      }
       game.updateScore(game.score);
     },
     destroy(game) {
@@ -1137,24 +1160,38 @@ const MINI_GAMES = [
       
     }
   },
-  {
+    {
     id: 'ticking_clock',
     title: 'Tickende Uhren',
+    title_en: 'Ticking Clocks',
     cat: 'logic',
-    desc: 'Drei Uhren ticken. Finde heraus, welche der Uhren asynchron aus der Reihe tanzt!',
+    desc: 'Drei Uhren ticken. Finde heraus, welche der Uhren aus der Reihe tanzt!',
+    desc_en: 'Three clocks are ticking. Spot which clock ticks off-beat!',
     tutorial: 'Tickende Uhren: Höre Uhr 1 (Links), Uhr 2 (Mitte/Aktion) und Uhr 3 (Rechts). Wähle die Uhr mit dem abweichenden Ton!',
+    tutorial_en: 'Ticking Clocks: Listen to Clock 1 (Left), Clock 2 (Center/Action), and Clock 3 (Right). Pick the outlier!',
     init(game) {
-      game.score = 0; game.odd = Math.floor(Math.random() * 3);
-      AudioEngine.speak('Uhren werden angehört: Links, Mitte, Rechts.');
-      setTimeout(() => AudioEngine.playTone(game.odd===0?500:400, 0.1, -0.7), 1200);
-      setTimeout(() => AudioEngine.playTone(game.odd===1?500:400, 0.1, 0), 1800);
-      setTimeout(() => AudioEngine.playTone(game.odd===2?500:400, 0.1, 0.7), 2400);
+      game.score = 0;
+      game.nextRound = () => {
+        game.odd = Math.floor(Math.random() * 3);
+        const isEn = (AudioEngine.lang === 'en');
+        AudioEngine.speak(isEn ? 'Listen: Left, Center, Right.' : 'Uhren werden angehört: Links, Mitte, Rechts.');
+        setTimeout(() => AudioEngine.playTone(game.odd === 0 ? 560 : 400, 0.1, -0.7), 1200);
+        setTimeout(() => AudioEngine.playTone(game.odd === 1 ? 560 : 400, 0.1, 0), 1800);
+        setTimeout(() => AudioEngine.playTone(game.odd === 2 ? 560 : 400, 0.1, 0.7), 2400);
+      };
+      game.nextRound();
     },
     onAction(game, type) {
-      const choice = type === 'left' ? 0 : (type === 'action' ? 1 : 2);
+      const choice = (type === 'left') ? 0 : ((type === 'action' || type === 'up' || type === 'down') ? 1 : 2);
       if (choice === game.odd) {
-        game.score += 350; AudioEngine.playSound('success'); AudioEngine.speak('Richtig herausgehört!');
-      } else { AudioEngine.playSound('error'); }
+        game.score += 300;
+        AudioEngine.playSound('success');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Correct clock spotted!' : 'Richtig herausgehört!');
+        setTimeout(() => game.nextRound(), 1500);
+      } else {
+        AudioEngine.playSound('error');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Wrong clock.' : 'Falsche Uhr.');
+      }
       game.updateScore(game.score);
     },
     destroy(game) {
@@ -1190,7 +1227,7 @@ const MINI_GAMES = [
   {
     id: 'audio_math',
     title: 'Audio Math',
-    cat: 'logic',
+    cat: 'speech',
     desc: 'Löse wechselnde Mathe-Aufgaben durch Auswahl der Antwort A (Links) oder B (Rechts)!',
     tutorial: 'Audio Math: Höre die Rechenaufgabe. Wähle Antwort 1 mit Links oder Antwort 2 mit Rechts!',
     init(game) {
@@ -1218,7 +1255,7 @@ const MINI_GAMES = [
   {
     id: 'audio_lockpicker',
     title: 'Audio Lockpicker',
-    cat: 'logic',
+    cat: 'speech',
     desc: 'Hebe die Stifte des Zylinderschlosses an und fixiere sie mit Gefühl!',
     tutorial: 'Audio Lockpicker: Hebe den Stift mit Rechts an. Wenn der Ton rein klingt, arretiere ihn mit Aktion!',
     init(game) {
@@ -1245,7 +1282,7 @@ const MINI_GAMES = [
   {
     id: 'audio_simon_says',
     title: 'Audio Simon Says',
-    cat: 'logic',
+    cat: 'speech',
     desc: 'Befolgen nur, wenn Simon es sagt!',
     tutorial: 'Audio Simon Says: Hörst du "Simon sagt: Links!", drücke Links. Sagt er nur "Rechts!", darfst du NICHT drücken!',
     init(game) {
@@ -1273,7 +1310,7 @@ const MINI_GAMES = [
   {
     id: 'frequency_jammer',
     title: 'Frequenz-Jäger',
-    cat: 'logic',
+    cat: 'nav',
     desc: 'Drehe am Radio-Tuner und finde den klaren Sender im Äther!',
     tutorial: 'Frequenz-Jäger: Rausche mit Links und Rechts durch die Frequenzen. Sobald eine klare Melodie erklingt, drücke Aktion!',
     init(game) {
@@ -1301,7 +1338,7 @@ const MINI_GAMES = [
   {
     id: 'stairs_of_fate',
     title: 'Treppe des Schicksals',
-    cat: 'logic',
+    cat: 'nav',
     desc: 'Steige 10 Stufen empor. Knarrt eine Stufe, weiche sofort zur Seite aus!',
     tutorial: 'Treppe des Schicksals: Steige mit Aktion eine Stufe hoch. Knarrt die Stufe, springe schnell mit Links oder Rechts zur Seite!',
     init(game) {
@@ -1562,7 +1599,7 @@ const MINI_GAMES = [
   {
     id: 'echo_hunter',
     title: 'Echo-Jäger',
-    cat: 'nav',
+    cat: 'sim',
     desc: 'Folge dem Echo des Rufers in der Tropfsteinhöhle!',
     tutorial: 'Echo-Jäger: Ein Ruf erschallt. Drehe dich mit Links oder Rechts dorthin und bestätige mit Aktion!',
     init(game) {
@@ -1584,7 +1621,7 @@ const MINI_GAMES = [
   {
     id: 'audio_archery_pro',
     title: 'Audio-Bogenschießen Pro',
-    cat: 'nav',
+    cat: 'action',
     desc: 'Meisterklasse Bogenschießen: Gleiche Windgeräusche links und rechts aus!',
     tutorial: 'Bogenschießen Pro: Der Wind pfeift. Steuere mit Links und Rechts gegen die Winddrift an und schieße mit Aktion!',
     init(game) {
@@ -1606,67 +1643,125 @@ const MINI_GAMES = [
       clearInterval(game.iv);
     }
   },
-  {
+    {
     id: 'word_snake',
     title: 'Wort-Schlange',
+    title_en: 'Word Snake',
     cat: 'speech',
     desc: 'Bilde eine Kette: Welches Wort beginnt mit dem letzten Buchstaben? Links = A, Rechts = B!',
-    tutorial: 'Wort-Schlange: Ich nenne ein Wort. Wähle mit Links oder Rechts das Wort, das mit dem Endbuchstaben beginnt!',
+    desc_en: 'Chain words together: Which word starts with the last letter? Left = A, Right = B!',
+    tutorial: 'Wort-Schlange: Ich nenne ein Startwort. Wähle mit Links oder Rechts das Wort, das mit dem Endbuchstaben beginnt!',
+    tutorial_en: 'Word Snake: I announce a word. Choose Left or Right for the word starting with its last letter!',
     init(game) {
-      game.score = 0; game.correct = 'left';
-      AudioEngine.speak('Start: Hund. Endet mit D. Links: Delfin. Rechts: Katze.');
-      game.correct = 'left';
+      game.score = 0;
+      game.pairs = [
+        { de: 'Start: Hund. Endet mit D. Links: Delfin. Rechts: Katze.', en: 'Start: Dog. Ends with G. Left: Giraffe. Right: Cat.', correct: 'left' },
+        { de: 'Start: Elefant. Endet mit T. Links: Maus. Rechts: Tiger.', en: 'Start: Elephant. Ends with T. Left: Mouse. Right: Tiger.', correct: 'right' },
+        { de: 'Start: Rose. Endet mit E. Links: Ente. Rechts: Vogel.', en: 'Start: Rose. Ends with E. Left: Eagle. Right: Bird.', correct: 'left' },
+        { de: 'Start: Bär. Endet mit R. Links: Fuchs. Rechts: Rabe.', en: 'Start: Bear. Ends with R. Left: Fox. Right: Rabbit.', correct: 'right' }
+      ];
+      game.idx = 0;
+      game.ask = () => {
+        const item = game.pairs[game.idx % game.pairs.length];
+        game.correct = item.correct;
+        AudioEngine.speak(AudioEngine.lang === 'en' ? item.en : item.de);
+      };
+      game.ask();
     },
     onAction(game, type) {
       if (type === game.correct) {
-        game.score += 200; AudioEngine.playSound('confirm'); AudioEngine.speak('Richtig verkettet! +200');
-        game.correct = game.correct === 'left' ? 'right' : 'left';
-      } else { AudioEngine.playSound('error'); }
+        game.score += 200;
+        AudioEngine.playSound('confirm');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Correct chain!' : 'Richtig verkettet!');
+        game.idx++;
+        setTimeout(() => game.ask(), 1600);
+      } else {
+        AudioEngine.playSound('error');
+      }
       game.updateScore(game.score);
     },
     destroy(game) {
       
     }
   },
-  {
+    {
     id: 'sound_quiz',
     title: 'Geräusche-Quiz',
+    title_en: 'Sound Quiz',
     cat: 'speech',
     desc: 'Erkennst du den Sound? Wähle Antwort 1 mit Links oder Antwort 2 mit Rechts!',
+    desc_en: 'Identify the audio cue! Choose Option 1 with Left or Option 2 with Right!',
     tutorial: 'Geräusche-Quiz: Höre das Tonsignal und wähle die richtige Zuordnung mit Links oder Rechts!',
+    tutorial_en: 'Sound Quiz: Listen to the sound and choose the correct option with Left or Right!',
     init(game) {
-      game.score = 0; game.correct = 'left';
-      game.next = () => {
-        AudioEngine.playTone(300, 0.2, 0, 'sawtooth');
-        AudioEngine.speak('Was war das? Links: Säge. Rechts: Flöte.');
-        game.correct = 'left';
+      game.score = 0;
+      game.questions = [
+        { freq: 320, type: 'sawtooth', de: 'Was war das? Links: Säge. Rechts: Flöte.', en: 'What was that? Left: Saw. Right: Flute.', correct: 'left' },
+        { freq: 880, type: 'sine', de: 'Was war das? Links: Trommel. Rechts: Glocke.', en: 'What was that? Left: Drum. Right: Bell.', correct: 'right' },
+        { freq: 140, type: 'square', de: 'Was war das? Links: Donner. Rechts: Vogel.', en: 'What was that? Left: Thunder. Right: Bird.', correct: 'left' }
+      ];
+      game.idx = 0;
+      game.ask = () => {
+        const item = game.questions[game.idx % game.questions.length];
+        game.correct = item.correct;
+        AudioEngine.playTone(item.freq, 0.35, 0, item.type, 0.6);
+        setTimeout(() => {
+          AudioEngine.speak(AudioEngine.lang === 'en' ? item.en : item.de);
+        }, 500);
       };
-      setTimeout(game.next, 1000);
+      game.ask();
     },
     onAction(game, type) {
       if (type === game.correct) {
-        game.score += 200; AudioEngine.playSound('success'); AudioEngine.speak('Genau richtig!');
-      } else { AudioEngine.playSound('error'); }
-      game.updateScore(game.score); setTimeout(game.next, 2000);
+        game.score += 200;
+        AudioEngine.playSound('success');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Exactly right!' : 'Genau richtig!');
+        game.idx++;
+        setTimeout(() => game.ask(), 1800);
+      } else {
+        AudioEngine.playSound('error');
+      }
+      game.updateScore(game.score);
     },
     destroy(game) {
       
     }
   },
-  {
+    {
     id: 'letter_salad',
     title: 'Buchstaben-Salat',
+    title_en: 'Anagram Salad',
     cat: 'speech',
     desc: 'Errate das geschüttelte Wort: Wähle Lösung A mit Links oder B mit Rechts!',
-    tutorial: 'Buchstaben-Salat: Ich buchstabiere durcheinander: A-U-B-M. Was ist das? Links: Baum. Rechts: Maus.',
+    desc_en: 'Unscramble the word: Choose option A with Left or B with Right!',
+    tutorial: 'Buchstaben-Salat: Ich buchstabiere die Buchstaben. Welches Wort entsteht? Links oder Rechts!',
+    tutorial_en: 'Anagram Salad: I spell scrambled letters. Which word is it? Choose Left or Right!',
     init(game) {
-      game.score = 0; game.correct = 'left';
-      AudioEngine.speak('A - U - B - M. Links: Baum. Rechts: Maus.');
+      game.score = 0;
+      game.puzzles = [
+        { de: 'B - A - U - M. Was ist das? Links: Baum. Rechts: Maus.', en: 'B - O - O - K. What is it? Left: Book. Right: Boat.', correct: 'left' },
+        { de: 'F - I - S - C - H. Was ist das? Links: Tisch. Rechts: Fisch.', en: 'F - I - S - H. What is it? Left: Dish. Right: Fish.', correct: 'right' },
+        { de: 'S - T - E - R - N. Was ist das? Links: Stern. Rechts: Mond.', en: 'S - T - A - R. What is it? Left: Star. Right: Sun.', correct: 'left' },
+        { de: 'S - O - N - N - E. Was ist das? Links: Wolke. Rechts: Sonne.', en: 'R - A - I - N. What is it? Left: Wind. Right: Rain.', correct: 'right' }
+      ];
+      game.idx = 0;
+      game.ask = () => {
+        const item = game.puzzles[game.idx % game.puzzles.length];
+        game.correct = item.correct;
+        AudioEngine.speak(AudioEngine.lang === 'en' ? item.en : item.de);
+      };
+      game.ask();
     },
     onAction(game, type) {
       if (type === game.correct) {
-        game.score += 250; AudioEngine.playSound('confirm'); AudioEngine.speak('Richtig entwirrt!');
-      } else { AudioEngine.playSound('error'); }
+        game.score += 250;
+        AudioEngine.playSound('confirm');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Solved!' : 'Richtig entwirrt!');
+        game.idx++;
+        setTimeout(() => game.ask(), 1600);
+      } else {
+        AudioEngine.playSound('error');
+      }
       game.updateScore(game.score);
     },
     destroy(game) {
@@ -1706,7 +1801,7 @@ const MINI_GAMES = [
   {
     id: 'morse_runner',
     title: 'Morse-Läufer',
-    cat: 'speech',
+    cat: 'action',
     desc: 'Lerne Morsezeichen: War das ein Dit (kurz) oder ein Dah (lang)?',
     tutorial: 'Morse-Läufer: Ein Morsesignal ertönt. War es kurz (Dit), drücke Links. War es lang (Dah), drücke Rechts!',
     init(game) {
@@ -1730,7 +1825,7 @@ const MINI_GAMES = [
   {
     id: 'audio_morse_code',
     title: 'Audio-Morsen',
-    cat: 'speech',
+    cat: 'logic',
     desc: 'Übermittle das Notsignal S-O-S mit Punkten und Strichen!',
     tutorial: 'Audio-Morsen: Tippe das Notsignal S O S: Drei kurze Töne mit Links, drei lange Töne mit Rechts, drei kurze mit Links!',
     init(game) {
@@ -1751,7 +1846,7 @@ const MINI_GAMES = [
   {
     id: 'audio_boss',
     title: 'Audio-Bosskampf',
-    cat: 'speech',
+    cat: 'action',
     desc: 'Stelle dich dem Sound-Monster: Lausche den Angriffsmustern und kontere!',
     tutorial: 'Audio-Bosskampf: Wenn der Boss links brüllt, weiche nach rechts aus. Brüllt er rechts, weiche nach links aus. Lädt er Energie, schlage mit Aktion zu!',
     init(game) {
@@ -1778,7 +1873,7 @@ const MINI_GAMES = [
   {
     id: 'audio_spaceship',
     title: 'Audio-Raumschiff-Schlacht',
-    cat: 'speech',
+    cat: 'action',
     desc: 'Verteidige deine Raumstation vor Angreifern im 360-Grad-Sektor!',
     tutorial: 'Audio-Raumschiff-Schlacht: Feinde nähern sich von links oder rechts. Zerstöre sie mit der passenden Taste!',
     init(game) {
@@ -1799,19 +1894,33 @@ const MINI_GAMES = [
       clearInterval(game.iv);
     }
   },
-  {
+    {
     id: 'sound_weaver',
     title: 'Klang-Weber',
-    cat: 'speech',
-    desc: 'Weben harmonische Klangteppiche durch geschicktes Zusammenfügen!',
-    tutorial: 'Klang-Weber: Verbinde die Akkorde. Drücke Aktion, wenn beide Töne vollkommen harmonieren!',
+    title_en: 'Sound Weaver',
+    cat: 'logic',
+    desc: 'Webe harmonische Klangteppiche durch geschicktes Abpassen!',
+    desc_en: 'Weave harmonic soundscapes by timing chords accurately!',
+    tutorial: 'Klang-Weber: Höre zwei abwechselnde Töne. Drücke Aktion, wenn der Ton genau in den Grundton übergeht!',
+    tutorial_en: 'Sound Weaver: Listen to alternating tones. Press Action when the chord aligns with the base tone!',
     init(game) {
-      game.score = 0; game.f = 440;
-      game.iv = setInterval(() => { AudioEngine.playTone(game.f, 0.1, 0); game.f = (game.f === 440 ? 550 : 440); }, 300);
+      game.score = 0; game.step = 0;
+      game.iv = setInterval(() => {
+        game.step = (game.step + 1) % 4;
+        const freq = (game.step === 0) ? 440 : 440 + game.step * 110;
+        AudioEngine.playTone(freq, 0.09, 0, 'sine', 0.5);
+      }, 260);
     },
     onAction(game, type) {
       if (type === 'action') {
-        game.score += 150; AudioEngine.playSound('success'); AudioEngine.updateScore(game.score);
+        if (game.step === 0) {
+          game.score += 200;
+          AudioEngine.playSound('success');
+          AudioEngine.speak(AudioEngine.lang === 'en' ? 'Harmonized!' : 'Harmonisch eingewoben!');
+        } else {
+          AudioEngine.playSound('bump');
+        }
+        game.updateScore(game.score);
       }
     },
     destroy(game) {
@@ -1905,36 +2014,66 @@ const MINI_GAMES = [
       
     }
   },
-  {
+    {
     id: 'audio_fishing',
     title: 'Audio-Angeln',
+    title_en: 'Audio Fishing',
     cat: 'sim',
     desc: 'Wirf die Angel aus, warte auf das Plätschern und reiße die Rute mit Aktion hoch!',
-    tutorial: 'Audio-Angeln: Höre das ruhige Wasser. Wenn es platscht und die Schnur zappelt, drücke sofort Aktion zum Einholen!',
+    desc_en: 'Cast your line, listen for the splash and strike with Action!',
+    tutorial: 'Audio-Angeln: Höre das Wasser. Wenn es platscht und die Schnur zappelt, drücke sofort Aktion!',
+    tutorial_en: 'Audio Fishing: Listen to the water. When a fish bites and splashes, press Action immediately!',
     init(game) {
-      game.score = 0; game.biting = false;
-      AudioEngine.speak('Angel ausgeworfen. Warte auf einen Biss...');
-      game.timer = setTimeout(() => {
-        game.biting = true; AudioEngine.playTone(280, 0.25, 0, 'sawtooth');
-        AudioEngine.vibrate([30, 20, 40]); AudioEngine.speak('Ein Biss! Jetzt!');
-        game.escapeTimer = setTimeout(() => { if (game.biting) { game.biting = false; AudioEngine.speak('Fisch entwischt.'); } }, 900);
-      }, 2000 + Math.random()*2500);
+      game.score = 0;
+      game.round = 1;
+      game.maxRounds = 5;
+      game.cast = () => {
+        game.biting = false;
+        AudioEngine.speak(AudioEngine.lang === 'en' ? `Round ${game.round}. Line cast... waiting for bite.` : `Runde ${game.round}. Angel ausgeworfen...`);
+        game.timer = setTimeout(() => {
+          game.biting = true;
+          AudioEngine.playTone(280, 0.3, 0, 'sawtooth');
+          AudioEngine.vibrate(50);
+          AudioEngine.speak(AudioEngine.lang === 'en' ? 'A bite! Strike!' : 'Ein Biss! Jetzt!');
+          game.escapeTimer = setTimeout(() => {
+            if (game.biting) {
+              game.biting = false;
+              AudioEngine.playSound('error');
+              AudioEngine.speak(AudioEngine.lang === 'en' ? 'Fish escaped.' : 'Fisch entwischt.');
+              game.round++;
+              if (game.round <= game.maxRounds) setTimeout(() => game.cast(), 1500);
+            }
+          }, 1100);
+        }, 1800 + Math.random() * 2000);
+      };
+      game.cast();
     },
     onAction(game, type) {
       if (type === 'action' && game.biting) {
-        clearTimeout(game.escapeTimer); game.biting = false; game.score += 350;
-        AudioEngine.playSound('cash'); AudioEngine.vibrate(60);
-        AudioEngine.speak('Großer Fang an Land gezogen! +350'); game.updateScore(game.score);
+        clearTimeout(game.escapeTimer);
+        game.biting = false;
+        game.score += 300;
+        AudioEngine.playSound('success');
+        AudioEngine.vibrate(60);
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Fish caught! +300' : 'Fisch gefangen! +300');
+        game.updateScore(game.score);
+        game.round++;
+        if (game.round <= game.maxRounds) {
+          setTimeout(() => game.cast(), 1800);
+        } else {
+          setTimeout(() => AudioEngine.speak(AudioEngine.lang === 'en' ? `Fishing trip finished! Score: ${game.score}` : `Angeln beendet! Endstand: ${game.score}`), 1500);
+        }
       }
     },
     destroy(game) {
-      clearTimeout(game.timer); clearTimeout(game.escapeTimer);
+      clearTimeout(game.timer);
+      clearTimeout(game.escapeTimer);
     }
   },
   {
     id: 'audio_minesweeper',
     title: 'Audio-Minenräumer',
-    cat: 'sim',
+    cat: 'logic',
     desc: 'Tastender Minensucher: Der Geigerzähler warnt vor verborgenen Sprengsätzen!',
     tutorial: 'Audio-Minenräumer: Bewege dich mit Links und Rechts voran. Wenn das Knistern des Geigerzählers zu schnell wird, markiere die Mine mit Aktion!',
     init(game) {
@@ -1959,5 +2098,254 @@ const MINI_GAMES = [
     destroy(game) {
       clearInterval(game.iv);
     }
+  },
+  {
+    id: 'audio_penalties',
+    title: 'Audio-Elfmeter',
+    title_en: 'Audio Penalties',
+    cat: 'action',
+    desc: 'Elfmeterschießen gegen den Torwart: Schieße mit Links, Rechts oder Aktion!',
+    desc_en: 'Penalty shootout against the keeper: Shoot with Left, Right, or Action!',
+    tutorial: 'Audio-Elfmeter: Höre auf die Schritte des Torwarts (Links, Mitte oder Rechts). Schieße in die freie Ecke!',
+    tutorial_en: 'Audio Penalties: Listen to the keeper shuffle (Left, Center, or Right). Shoot into the open net!',
+    init(game) {
+      game.score = 0; game.round = 1; game.maxRounds = 5;
+      game.nextShot = () => {
+        game.keeper = ['left', 'center', 'right'][Math.floor(Math.random() * 3)];
+        const pan = game.keeper === 'left' ? -0.8 : (game.keeper === 'right' ? 0.8 : 0);
+        AudioEngine.speak(AudioEngine.lang === 'en' ? `Penalty ${game.round}! Listen to keeper...` : `Elfmeter ${game.round}! Torwart positioniert sich...`);
+        setTimeout(() => {
+          AudioEngine.playTone(260, 0.12, pan);
+          setTimeout(() => {
+            AudioEngine.playSound('confirm');
+            AudioEngine.speak(AudioEngine.lang === 'en' ? 'Shoot now!' : 'Jetzt schießen!');
+            game.canShoot = true;
+          }, 800);
+        }, 1000);
+      };
+      game.nextShot();
+    },
+    onAction(game, type) {
+      if (!game.canShoot) return;
+      game.canShoot = false;
+      const aim = (type === 'action' || type === 'up') ? 'center' : type;
+      if (aim !== game.keeper) {
+        game.score += 200;
+        AudioEngine.playSound('success');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'GOAL! +200' : 'TOOOR! +200');
+      } else {
+        AudioEngine.playSound('error');
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Saved by the keeper!' : 'Gehalten!');
+      }
+      game.updateScore(game.score);
+      game.round++;
+      if (game.round <= game.maxRounds) {
+        setTimeout(() => game.nextShot(), 1800);
+      }
+    },
+    destroy(game) {}
+  },
+  {
+    id: 'audio_barista',
+    title: 'Audio-Barista',
+    title_en: 'Audio Barista',
+    cat: 'sim',
+    desc: 'Gieße Kaffee bis zum Rand ein. Lausche auf die ansteigende Resonanz!',
+    desc_en: 'Pour coffee to the rim by listening to the rising acoustic resonance!',
+    tutorial: 'Audio-Barista: Drücke Aktion zum Eingießen. Der Ton wird immer höher. Stoppe genau beim höchsten Ton am Becherrand!',
+    tutorial_en: 'Audio Barista: Press Action to pour. The pitch gets higher. Stop right at the rim!',
+    init(game) {
+      game.score = 0; game.fill = 0; game.pouring = false;
+      AudioEngine.speak(AudioEngine.lang === 'en' ? 'Cup ready! Hold Action to pour.' : 'Tasse bereit! Drücke Aktion zum Eingießen.');
+    },
+    onAction(game, type) {
+      if (type === 'action') {
+        if (!game.pouring) {
+          game.pouring = true;
+          game.fill = 0;
+          game.iv = setInterval(() => {
+            game.fill += 0.05;
+            const freq = 240 + game.fill * 600;
+            AudioEngine.playTone(freq, 0.08, 0, 'sine', 0.6);
+            if (game.fill >= 1.15) {
+              clearInterval(game.iv);
+              game.pouring = false;
+              AudioEngine.playSound('error');
+              AudioEngine.speak(AudioEngine.lang === 'en' ? 'Spilled over!' : 'Übergelaufen!');
+            }
+          }, 120);
+        } else {
+          // Stoppen
+          clearInterval(game.iv);
+          game.pouring = false;
+          const diff = Math.abs(1.0 - game.fill);
+          if (diff <= 0.12) {
+            game.score += 300;
+            AudioEngine.playSound('success');
+            AudioEngine.speak(AudioEngine.lang === 'en' ? 'Perfect pour! +300' : 'Perfekt eingeschenkt! +300');
+          } else {
+            AudioEngine.playSound('bump');
+            AudioEngine.speak(AudioEngine.lang === 'en' ? 'Underfilled cup.' : 'Nicht ganz voll.');
+          }
+          game.updateScore(game.score);
+        }
+      }
+    },
+    destroy(game) { clearInterval(game.iv); }
+  },
+  {
+    id: 'audio_ghost_hunt',
+    title: 'Audio-Geisterjagd',
+    title_en: 'Audio Ghost Hunt',
+    cat: 'nav',
+    desc: 'Peile unsichtbare Geister akustisch an und fange sie mit dem Fangstrahl!',
+    desc_en: 'Track invisible ghosts with your EMF detector and capture them!',
+    tutorial: 'Audio-Geisterjagd: Drehe dich mit Links/Rechts. Wenn das Signal am lautesten in der Mitte tickt, drücke Aktion!',
+    tutorial_en: 'Audio Ghost Hunt: Turn with Left/Right. When the EMF signal is loudest and centered, press Action!',
+    init(game) {
+      game.score = 0; game.playerPan = 0; game.ghostPan = (Math.random() - 0.5) * 1.6;
+      game.iv = setInterval(() => {
+        const diff = game.ghostPan - game.playerPan;
+        const pan = Math.max(-1, Math.min(1, diff));
+        const freq = 800 - Math.abs(diff) * 400;
+        AudioEngine.playTone(freq, 0.04, pan, 'sine', 0.5);
+      }, 250);
+      AudioEngine.speak(AudioEngine.lang === 'en' ? 'Ghost spotted! Search the room.' : 'Geist im Raum! Suche das Signal.');
+    },
+    onAction(game, type) {
+      if (type === 'left') game.playerPan = Math.max(-1, game.playerPan - 0.2);
+      else if (type === 'right') game.playerPan = Math.min(1, game.playerPan + 0.2);
+      else if (type === 'action') {
+        if (Math.abs(game.ghostPan - game.playerPan) < 0.25) {
+          game.score += 350;
+          AudioEngine.playSound('success');
+          AudioEngine.speak(AudioEngine.lang === 'en' ? 'Ghost trapped! +350' : 'Geist gefangen! +350');
+          game.ghostPan = (Math.random() - 0.5) * 1.6;
+        } else {
+          AudioEngine.playSound('bump');
+        }
+      }
+      game.updateScore(game.score);
+    },
+    destroy(game) { clearInterval(game.iv); }
+  },
+  {
+    id: 'audio_alchemy',
+    title: 'Audio-Alchemie',
+    title_en: 'Audio Alchemy',
+    cat: 'logic',
+    desc: 'Braue Zaubertränke durch exaktes Dosieren der Essenzen!',
+    desc_en: 'Brew potions by measuring exact drops of magical essences!',
+    tutorial: 'Audio-Alchemie: Höre das Rezept. Tropfe Rot mit Links (oder Taste 1), Blau mit Rechts (oder Taste 2). Rühre mit Aktion um!',
+    tutorial_en: 'Audio Alchemy: Listen to the recipe. Add Red with Left (Key 1), Blue with Right (Key 2). Stir with Action!',
+    init(game) {
+      game.score = 0; game.targetR = 2; game.targetB = 1; game.curR = 0; game.curB = 0;
+      game.recipe = () => {
+        game.curR = 0; game.curB = 0;
+        game.targetR = Math.floor(Math.random() * 3) + 1;
+        game.targetB = Math.floor(Math.random() * 3) + 1;
+        const msg = (AudioEngine.lang === 'en')
+          ? `Recipe: ${game.targetR}x Red, ${game.targetB}x Blue. Then Action!`
+          : `Rezept: ${game.targetR} mal Rot, ${game.targetB} mal Blau. Dann Aktion!`;
+        AudioEngine.speak(msg);
+      };
+      game.recipe();
+    },
+    onAction(game, type) {
+      if (type === 'left' || type === '1') {
+        game.curR++;
+        AudioEngine.playTone(320, 0.08, -0.5);
+      } else if (type === 'right' || type === '2') {
+        game.curB++;
+        AudioEngine.playTone(680, 0.08, 0.5);
+      } else if (type === 'action') {
+        if (game.curR === game.targetR && game.curB === game.targetB) {
+          game.score += 300;
+          AudioEngine.playSound('success');
+          AudioEngine.speak(AudioEngine.lang === 'en' ? 'Elixir brewed perfectly!' : 'Elixier meisterhaft gebraut!');
+          setTimeout(() => game.recipe(), 1600);
+        } else {
+          AudioEngine.playSound('error');
+          AudioEngine.speak(AudioEngine.lang === 'en' ? 'Potion ruined!' : 'Trank verpufft!');
+          setTimeout(() => game.recipe(), 1400);
+        }
+      }
+      game.updateScore(game.score);
+    },
+    destroy(game) {}
+  },
+  {
+    id: 'audio_dj',
+    title: 'Audio-DJ-Turntable',
+    title_en: 'Audio DJ Turntable',
+    cat: 'action',
+    desc: 'Lass den Beat laufen und scratche genau auf Schlag 4!',
+    desc_en: 'Drop the needle and scratch precisely on Beat 4!',
+    tutorial: 'Audio-DJ: Höre den 4/4 Beat: 1-2-3-Scratch! Drücke auf Schlag 4 Links oder Rechts!',
+    tutorial_en: 'Audio DJ: Listen to the 4/4 beat: 1-2-3-Scratch! Press Left or Right on Beat 4!',
+    init(game) {
+      game.score = 0; game.beat = 0;
+      game.iv = setInterval(() => {
+        game.beat = (game.beat + 1) % 4;
+        if (game.beat === 3) {
+          AudioEngine.playTone(600, 0.06, 0.3, 'sine', 0.6);
+        } else {
+          AudioEngine.playTone(140, 0.06, 0, 'sine', 0.8);
+        }
+      }, 500);
+      AudioEngine.speak(AudioEngine.lang === 'en' ? 'DJ set started! Scratch on Beat 4.' : 'DJ-Set gestartet! Scratche auf Schlag 4.');
+    },
+    onAction(game, type) {
+      if (type === 'left' || type === 'right' || type === 'action') {
+        if (game.beat === 3) {
+          game.score += 150;
+          AudioEngine.playSound('knifeSlice');
+        } else {
+          game.score = Math.max(0, game.score - 40);
+          AudioEngine.playSound('bump');
+        }
+        game.updateScore(game.score);
+      }
+    },
+    destroy(game) { clearInterval(game.iv); }
+  },
+  {
+    id: 'audio_birdwatcher',
+    title: 'Audio-Vogelstimmen',
+    title_en: 'Audio Birdwatcher',
+    cat: 'speech',
+    desc: 'Erkenne die Vögel des Waldes an ihrem Gesang!',
+    desc_en: 'Identify forest birds by their unique melodic calls!',
+    tutorial: 'Audio-Vogelstimmen: Höre den Ruf. 1 = Kuckuck (Links), 2 = Eule (Rechts), 3 = Specht (Oben), 4 = Nachtigall (Unten)!',
+    tutorial_en: 'Audio Birdwatcher: Listen to call. 1 = Cuckoo (Left), 2 = Owl (Right), 3 = Woodpecker (Up), 4 = Nightingale (Down)!',
+    init(game) {
+      game.score = 0;
+      game.birds = [
+        { id: 1, key: 'left', de: 'Kuckuck', en: 'Cuckoo', play: () => { AudioEngine.playTone(540, 0.2, 0); setTimeout(() => AudioEngine.playTone(420, 0.25, 0), 120); } },
+        { id: 2, key: 'right', de: 'Eule', en: 'Owl', play: () => { AudioEngine.playTone(180, 0.35, 0); setTimeout(() => AudioEngine.playTone(160, 0.45, 0), 90); } },
+        { id: 3, key: 'up', de: 'Specht', en: 'Woodpecker', play: () => { for(let i=0; i<4; i++) setTimeout(() => AudioEngine.playTone(700, 0.03, 0), i*50); } },
+        { id: 4, key: 'down', de: 'Nachtigall', en: 'Nightingale', play: () => { [880, 988, 1046, 1174].forEach((f, i) => setTimeout(() => AudioEngine.playTone(f, 0.08, 0), i*50)); } }
+      ];
+      game.nextBird = () => {
+        game.cur = game.birds[Math.floor(Math.random() * game.birds.length)];
+        AudioEngine.speak(AudioEngine.lang === 'en' ? 'Bird calling...' : 'Vogelruf...');
+        setTimeout(() => game.cur.play(), 800);
+      };
+      game.nextBird();
+    },
+    onAction(game, type) {
+      const match = (type === String(game.cur.id)) || (type === game.cur.key);
+      if (match) {
+        game.score += 200;
+        AudioEngine.playSound('success');
+        const name = (AudioEngine.lang === 'en') ? game.cur.en : game.cur.de;
+        AudioEngine.speak(AudioEngine.lang === 'en' ? `Correct! That was the ${name}.` : `Richtig! Das war der ${name}.`);
+        setTimeout(() => game.nextBird(), 1800);
+      } else {
+        AudioEngine.playSound('error');
+      }
+      game.updateScore(game.score);
+    },
+    destroy(game) {}
   }
 ];
