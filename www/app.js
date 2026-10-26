@@ -390,3 +390,89 @@ function loadSettings() {
   const setVib = document.getElementById('set-vibrate');
   if (setVib) setVib.checked = AudioEngine.vibrationEnabled;
 }
+
+// --- FEEDBACK SYSTEM ---
+function openFeedbackModal() {
+  const modal = document.getElementById('modal-feedback');
+  if (modal) modal.style.display = 'flex';
+  const sender = document.getElementById('fb-sender');
+  if (sender) sender.focus();
+  if (typeof AudioEngine !== 'undefined') {
+    AudioEngine.speak(AudioEngine.lang === 'en' ? 'Feedback dialog opened.' : 'Feedback-Dialog geöffnet.');
+  }
+}
+
+function closeFeedbackModal() {
+  const modal = document.getElementById('modal-feedback');
+  if (modal) modal.style.display = 'none';
+  const statusEl = document.getElementById('fb-status');
+  if (statusEl) statusEl.textContent = '';
+  if (typeof AudioEngine !== 'undefined') {
+    AudioEngine.speak(AudioEngine.lang === 'en' ? 'Feedback closed.' : 'Feedback geschlossen.');
+  }
+}
+
+async function sendFeedback() {
+  const senderInput = document.getElementById('fb-sender');
+  const textInput = document.getElementById('fb-text');
+  const statusEl = document.getElementById('fb-status');
+
+  const sender = (senderInput && senderInput.value.trim()) || 'Anonym';
+  const text = (textInput && textInput.value.trim()) || '';
+
+  if (!text) {
+    const msg = (typeof AudioEngine !== 'undefined' && AudioEngine.lang === 'en') ? 'Please enter a message!' : 'Bitte gib eine Nachricht ein!';
+    if (statusEl) {
+      statusEl.style.color = '#ef4444';
+      statusEl.textContent = msg;
+    }
+    if (typeof AudioEngine !== 'undefined') AudioEngine.speak(msg, true);
+    return;
+  }
+
+  if (statusEl) {
+    statusEl.style.color = '#eab308';
+    statusEl.textContent = (typeof AudioEngine !== 'undefined' && AudioEngine.lang === 'en') ? 'Sending...' : 'Wird gesendet...';
+  }
+
+  const payload = `App: minigames\nVersion: 2.2\nAbsender: ${sender}\nDatum: ${new Date().toISOString()}\nNachricht:\n${text}`;
+
+  try {
+    const res = await fetch('https://ntfy.sh/lauju_app_feedback', {
+      method: 'POST',
+      body: payload,
+      headers: {
+        'Title': `🎮 Minispiele Feedback von ${sender}`,
+        'Tags': 'video_game,speech_balloon,minigames',
+        'Priority': 'default'
+      }
+    });
+
+    if (res.ok) {
+      const succ = (typeof AudioEngine !== 'undefined' && AudioEngine.lang === 'en') ? 'Thank you! Feedback sent successfully.' : 'Vielen Dank! Dein Feedback wurde erfolgreich gesendet.';
+      if (statusEl) {
+        statusEl.style.color = '#22c55e';
+        statusEl.textContent = succ;
+      }
+      if (textInput) textInput.value = '';
+      if (typeof AudioEngine !== 'undefined') {
+        AudioEngine.playSound('success');
+        AudioEngine.speak(succ, true);
+      }
+      setTimeout(closeFeedbackModal, 2000);
+    } else {
+      throw new Error('Server responded with ' + res.status);
+    }
+  } catch (err) {
+    console.error('Feedback error:', err);
+    const errMsg = (typeof AudioEngine !== 'undefined' && AudioEngine.lang === 'en') ? 'Error sending feedback. Please check your connection.' : 'Fehler beim Senden. Bitte Verbindung prüfen.';
+    if (statusEl) {
+      statusEl.style.color = '#ef4444';
+      statusEl.textContent = errMsg;
+    }
+    if (typeof AudioEngine !== 'undefined') {
+      AudioEngine.playSound('error');
+      AudioEngine.speak(errMsg, true);
+    }
+  }
+}

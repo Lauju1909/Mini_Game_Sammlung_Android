@@ -20,6 +20,7 @@
       <button type="button" class="btn-icon" id="btn-lang" aria-label="Sprache wechseln (Deutsch / English)" onclick="toggleLanguage()">🇩🇪</button>
       <button type="button" class="btn-icon" id="btn-random" aria-label="Zufälliges Spiel starten" onclick="startRandomGame()">🎲</button>
       <button type="button" class="btn-icon" id="btn-toggle-tts" aria-label="Sprachausgabe umschalten" onclick="toggleTTS()">🔊</button>
+      <button type="button" class="btn-icon" id="btn-feedback" aria-label="Feedback oder Idee senden" onclick="openFeedbackModal()">💬</button>
       <button type="button" class="btn-icon" id="btn-open-settings" aria-label="Einstellungen öffnen" onclick="openSettings()">⚙️</button>
     </div>
   </header>
@@ -100,6 +101,31 @@
       </div>
     </div>
   </section>
+
+  <!-- FEEDBACK MODAL -->
+  <div id="modal-feedback" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-title" style="display: none;">
+    <div class="modal-card">
+      <h2 id="feedback-title">💬 Feedback & Ideen senden</h2>
+      <p style="font-size: 0.9rem; color: #a0aec0; margin: 0;">Dein Feedback landet direkt bei Entwickler Lauju in der Feedback-Zentrale.</p>
+      
+      <div class="setting-group">
+        <label for="fb-sender">Dein Name / Alias (optional):</label>
+        <input type="text" id="fb-sender" class="search-input" placeholder="z. B. Alex oder Anonym">
+      </div>
+
+      <div class="setting-group">
+        <label for="fb-text">Deine Nachricht / Fehlerbericht / Spiel-Idee:</label>
+        <textarea id="fb-text" class="search-input" rows="4" style="resize: vertical; font-family: inherit;" placeholder="Was gefällt dir? Was können wir verbessern?"></textarea>
+      </div>
+
+      <div id="fb-status" aria-live="polite" style="min-height: 24px; font-weight: bold; font-size: 0.95rem;"></div>
+
+      <div style="display: flex; gap: 10px; margin-top: 6px;">
+        <button type="button" class="btn-primary" style="flex: 2;" onclick="sendFeedback()">📤 Absenden</button>
+        <button type="button" class="btn-danger" style="flex: 1;" onclick="closeFeedbackModal()">Abbrechen</button>
+      </div>
+    </div>
+  </div>
 
   <!-- EINSTELLUNGEN MODAL -->
   <div id="modal-settings" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title" style="display: none;">
