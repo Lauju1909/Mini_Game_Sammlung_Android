@@ -6,7 +6,8 @@ class MobileAudioEngine {
     this.ttsVolume = 0.9;
     this.speechRate = 1.1;
     this.vibrationEnabled = true;
-    this.lang = 'de';
+    const navLang = (typeof navigator !== 'undefined' && ((navigator.languages && navigator.languages[0]) || navigator.language)) || '';
+    this.lang = navLang.toLowerCase().startsWith('en') ? 'en' : 'de';
     this.isTTSActive = true;
     this.audioCache = {};
     this.loops = {};
