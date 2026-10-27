@@ -168,10 +168,15 @@
   <script src="games.js"></script>
   <script src="app.js"></script>
   <script>
-    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let r of registrations) r.unregister();
+      }).catch(() => {});
+      if (window.caches) {
+        caches.keys().then(keys => {
+          keys.forEach(k => caches.delete(k));
+        }).catch(() => {});
+      }
     }
   </script>
 </body>
