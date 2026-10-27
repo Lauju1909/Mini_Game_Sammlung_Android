@@ -7,6 +7,9 @@ const MINI_GAMES = [
   {
     id: 'beat_reaktor',
     title: 'Beat-Reaktor',
+    title_en: "Beat Reactor",
+    desc_en: "Reaction game: React lightning-fast to the stereo beat on the left or right!",
+    tutorial_en: "Beat Reactor: Listen to the beat! If you hear the beat on the left, tap Left immediately. If on the right, tap Right!",
     cat: 'action',
     desc: 'Reaktionsspiel: Reagiere blitzschnell auf den Stereo-Beat links oder rechts!',
     tutorial: 'Beat-Reaktor: Achte auf den Beat! Hörst du den Beat links, tippe sofort links. Hörst du ihn rechts, tippe rechts!',
@@ -41,6 +44,9 @@ const MINI_GAMES = [
   {
     id: 'stereo_catch',
     title: 'Stereo-Münzfang',
+    title_en: "Stereo Coin Catch",
+    desc_en: "Hear coins falling from the left or right and catch them at the perfect moment!",
+    tutorial_en: "Stereo Coin Catch: Coins drop with falling pitch. Press the button on the correct side exactly when the coin hits the bottom!",
     cat: 'action',
     desc: 'Höre Münzen von links oder rechts herabfallen und fange sie im perfekten Moment!',
     tutorial: 'Stereo-Münzfang: Münzen fallen mit fallender Tonhöhe herab. Drücke die Taste auf der richtigen Seite, genau wenn die Münze unten ankommt!',
@@ -74,6 +80,9 @@ const MINI_GAMES = [
   {
     id: 'sound_catch',
     title: 'Ton-Jäger',
+    title_en: "Sound Hunter",
+    desc_en: "A tone wanders across the stereo field. Catch it right in the center!",
+    tutorial_en: "Sound Hunter: Listen as the sound moves from left to right. Press Action the exact moment the tone sounds centered between your ears!",
     cat: 'action',
     desc: 'Ein Ton wandert im Stereo-Panorama hin und her. Fange ihn exakt in der Mitte!',
     tutorial: 'Ton-Jäger: Höre, wie der Ton von links nach rechts wandert. Drücke Aktion genau in dem Moment, in dem der Ton mittig zwischen beiden Ohren erklingt!',
@@ -107,6 +116,9 @@ const MINI_GAMES = [
   {
     id: 'bomb_defuser',
     title: 'Bomben-Entschärfer',
+    title_en: "Bomb Defuser",
+    desc_en: "Find the correct wire on the ticking bomb and cut it in time!",
+    tutorial_en: "Bomb Defuser: Time is running! Inspect the 4 wires using Left and Right. The cleanest, highest pitch is the correct wire - press Action to cut it!",
     cat: 'action',
     desc: 'Finde den richtigen Draht der tickenden Bombe und schneide ihn durch!',
     tutorial: 'Bomben-Entschärfer: Die Zeit läuft! Taste mit Links und Rechts die 4 Drähte ab. Der sauberste, höchste Ton ist der richtige Draht – drücke Aktion zum Schneiden!',
@@ -142,6 +154,9 @@ const MINI_GAMES = [
   {
     id: 'key_storm',
     title: 'Tasten-Gewitter',
+    title_en: "Key Storm",
+    desc_en: "Press the announced key as quickly as possible: Left, Right, or Action!",
+    tutorial_en: "Key Storm: Listen to the announcement! Immediately press the announced button: Left, Right, or Action!",
     cat: 'action',
     desc: 'Drücke so schnell wie möglich die angesagte Taste: Links, Rechts oder Aktion!',
     tutorial: 'Tasten-Gewitter: Höre auf die Ansage! Drücke sofort die angesagte Taste: Links, Rechts oder Aktion!',
@@ -175,6 +190,9 @@ const MINI_GAMES = [
   {
     id: 'speed_dial',
     title: 'Schnellwähler',
+    title_en: "Speed Dialer",
+    desc_en: "React to acoustic phone dialing tones and hit the correct direction!",
+    tutorial_en: "Speed Dialer: High pitch means Right, low pitch means Left, double tone means Action. React as fast as you can!",
     cat: 'action',
     desc: 'Reagiere auf akustische Telefon-Wähltöne und treffe die richtige Richtung!',
     tutorial: 'Schnellwähler: Hoher Ton bedeutet Rechts, tiefer Ton bedeutet Links, Doppelton bedeutet Aktion. Reagiere so schnell wie möglich!',
@@ -207,6 +225,9 @@ const MINI_GAMES = [
   {
     id: 'mole_master',
     title: 'Maulwurf-Meister',
+    title_en: "Mole Master",
+    desc_en: "Hear where the mole is digging and whack it quickly with Left or Right!",
+    tutorial_en: "Mole Master: If you hear shoveling on the left, tap Left immediately. If on the right, tap Right!",
     cat: 'action',
     desc: 'Höre, wo der Maulwurf gräbt, und erwische ihn blitzschnell mit Links oder Rechts!',
     tutorial: 'Maulwurf-Meister: Hörst du das Schaufelgeräusch links, tippe sofort links. Hörst du es rechts, tippe rechts!',
@@ -239,6 +260,9 @@ const MINI_GAMES = [
   {
     id: 'rhythm_master',
     title: 'Rhythmus-König',
+    title_en: "Rhythm King",
+    desc_en: "Press the action button exactly on the 4th beat of the metronome!",
+    tutorial_en: "Rhythm King: You hear three beats: One, Two, Three. Press Action on the fourth beat exactly in rhythm!",
     cat: 'action',
     desc: 'Drücke die Aktionstaste exakt auf den 4. Beat des Metronoms!',
     tutorial: 'Rhythmus-König: Du hörst drei Takt-Schläge: Eins, Zwei, Drei. Drücke auf den vierten Schlag genau im Takt Aktion!',
@@ -273,6 +297,9 @@ const MINI_GAMES = [
   {
     id: 'reaction_blitz',
     title: 'Reaktions-Blitz',
+    title_en: "Reaction Blitz",
+    desc_en: "Wait for the start gong and hit Action with lightning speed!",
+    tutorial_en: "Reaction Blitz: Concentrate. After a random pause, a bright gong sounds. Hit Action immediately!",
     cat: 'action',
     desc: 'Warte auf den Startgong und drücke blitzschnell Aktion!',
     tutorial: 'Reaktions-Blitz: Konzentriere dich. Nach einer zufälligen Pause ertönt ein heller Gong. Drücke sofort Aktion!',
@@ -309,6 +336,9 @@ const MINI_GAMES = [
   {
     id: 'audio_archery',
     title: 'Audio-Bogenschießen',
+    title_en: "Audio Archery",
+    desc_en: "Aim using pitch and hit the center of the target!",
+    tutorial_en: "Audio Archery: Pitch oscillates up and down. The higher the pitch, the closer you are to the bullseye. Press Action when the pitch is at its peak!",
     cat: 'action',
     desc: 'Ziele per Tonhöhe und treffe die Mitte der Zielscheibe!',
     tutorial: 'Audio-Bogenschießen: Die Tonhöhe schwingt auf und ab. Je höher der Ton, desto näher bist du dem Bullseye. Drücke Aktion, wenn der Ton am höchsten ist!',
@@ -340,6 +370,9 @@ const MINI_GAMES = [
   {
     id: 'audio_ping_pong',
     title: 'Audio-Ping-Pong',
+    title_en: "Audio Table Tennis",
+    desc_en: "Hit the incoming ping pong ball back at the right moment!",
+    tutorial_en: "Audio Table Tennis: Hear the ball approaching. When the pitch rises and sound gets loud, hit it back with Left or Right at the perfect instant!",
     cat: 'action',
     desc: 'Schlage den heranfliegenden Tischtennisball im richtigen Moment zurück!',
     tutorial: 'Audio-Ping-Pong: Höre den Ball auf dich zukommen. Wird der Ton lauter und höher, schlage mit Links oder Rechts im perfekten Moment zurück!',
@@ -374,6 +407,9 @@ const MINI_GAMES = [
   {
     id: 'audio_mosquito',
     title: 'Audio-Mückenjagd',
+    title_en: "Audio Mosquito Hunt",
+    desc_en: "Locate the buzzing mosquito in 3D stereo space and swat it!",
+    tutorial_en: "Audio Mosquito Hunt: The mosquito buzzes around your head. Listen closely: Is it left? Press Left. Is it right? Press Right. Directly ahead? Press Action!",
     cat: 'action',
     desc: 'Lokalisiere das Summen der Mücke im Stereo-Raum und klatsche sie ab!',
     tutorial: 'Audio-Mückenjagd: Die Mücke schwirrt um deinen Kopf herum. Höre genau hin: Ist sie links, drücke Links. Ist sie rechts, drücke Rechts. Ist sie genau vor dir, drücke Aktion!',
@@ -402,6 +438,9 @@ const MINI_GAMES = [
   {
     id: 'audio_racer',
     title: 'Audio-Rennfahrer',
+    title_en: "Audio Racer",
+    desc_en: "Dodge oncoming traffic in the left or right lane with quick reflexes!",
+    tutorial_en: "Audio Racer: You are speeding down the highway. Hear engine noise on the left? Dodge right. Hear it on the right? Dodge left!",
     cat: 'action',
     desc: 'Weiche Gegenverkehr auf der linken oder rechten Spur blitzschnell aus!',
     tutorial: 'Audio-Rennfahrer: Du fährst mit hoher Geschwindigkeit. Hörst du ein Motorengeräusch links, weiche nach rechts aus. Hörst du es rechts, weiche nach links aus!',
@@ -435,6 +474,9 @@ const MINI_GAMES = [
   {
     id: 'audio_frogger',
     title: 'Audio-Frosch',
+    title_en: "Audio Frogger",
+    desc_en: "Cross the busy road: Listen for gaps between cars and hop forward with Action!",
+    tutorial_en: "Audio Frogger: Cars roar past. When it goes quiet, press Action to safely leap across the road!",
     cat: 'action',
     desc: 'Überquere die Straße: Lausche den Autolücken und hüpfe mit Aktion vorwärts!',
     tutorial: 'Audio-Frosch: Autos brausen vorbei. Wenn es still wird, drücke Aktion, um sicher über die Fahrbahn zu hüpfen!',
@@ -465,6 +507,9 @@ const MINI_GAMES = [
   {
     id: 'audio_darts',
     title: 'Audio-Dart',
+    title_en: "Audio Darts",
+    desc_en: "Aim your dart right into the acoustic bullseye in the center!",
+    tutorial_en: "Audio Darts: The crosshair sweeps from left to right and back. Hit Action precisely when it reaches the center!",
     cat: 'action',
     desc: 'Ziele mit dem Pfeil genau ins akustische Bullseye in der Mitte!',
     tutorial: 'Audio-Dart: Der Zielkreis wandert von links nach rechts und wieder zurück. Drücke Aktion genau im Zentrum!',
@@ -498,6 +543,9 @@ const MINI_GAMES = [
   {
     id: 'beat_matcher',
     title: 'Beat-Matcher',
+    title_en: "Beat Matcher",
+    desc_en: "Match the tempo: Press Action in sync with the DJ beat!",
+    tutorial_en: "Beat Matcher: Listen to the beat. Keep the rhythm and tap Action consistently to boost your precision score!",
     cat: 'action',
     desc: 'Passe den Takt an: Drücke Aktion exakt im Rhythmus des DJ-Beats!',
     tutorial: 'Beat-Matcher: Höre den Beat. Halte den Rhythmus und tippe regelmäßig auf Aktion, um deine Treffsicherheit zu steigern!',
@@ -524,6 +572,9 @@ const MINI_GAMES = [
   {
     id: 'audio_defense',
     title: 'Audio-Verteidigung',
+    title_en: "Audio Defense",
+    desc_en: "Hostile robots are marching in from the left and right. Shoot them in time!",
+    tutorial_en: "Audio Defense: If you hear marching footsteps on the left, fire with Left. If on the right, fire with Right!",
     cat: 'action',
     desc: 'Feindliche Roboter greifen von links oder rechts an. Schieße rechtzeitig!',
     tutorial: 'Audio-Verteidigung: Hörst du Marschschritte links, schieße mit Links. Hörst du sie rechts, schieße mit Rechts!',
@@ -551,6 +602,9 @@ const MINI_GAMES = [
   {
     id: 'audio_balance',
     title: 'Audio-Balance',
+    title_en: "Audio Tightrope Balance",
+    desc_en: "Balance on the high wire: Counter-steer left or right to prevent falling!",
+    tutorial_en: "Audio Tightrope Balance: When the tone shifts left, tap Right to balance. If it shifts right, tap Left!",
     cat: 'action',
     desc: 'Balanciere auf dem Seil: Steuere nach links oder rechts gegen das Schwanken!',
     tutorial: 'Audio-Balance: Wandert der Ton nach links, tippe Rechts zum Ausgleichen. Wandert er nach rechts, tippe Links!',
@@ -579,6 +633,9 @@ const MINI_GAMES = [
   {
     id: 'audio_runner',
     title: 'Audio-Hürdenlauf',
+    title_en: "Audio Hurdle Runner",
+    desc_en: "Endless runner: Dodge obstacles with Left/Right and leap over hurdles with Action!",
+    tutorial_en: "Audio Hurdle Runner: Low rumble tone = Dodge left or right! High whistle = Jump with Action!",
     cat: 'action',
     desc: 'Renne endlos: Weiche Hindernissen aus mit Links/Rechts und springe mit Aktion!',
     tutorial: 'Audio-Hürdenlauf: Tiefer Brummton = Weiche mit Links oder Rechts aus! Hoher Pfeifton = Springe mit Aktion!',
@@ -611,6 +668,9 @@ const MINI_GAMES = [
   {
     id: 'audio_factory',
     title: 'Qualitätskontrolle',
+    title_en: "Quality Control",
+    desc_en: "Inspect parts on the assembly line: Sort defective parts Left and perfect parts Right!",
+    tutorial_en: "Quality Control: Clean high chime = Good part (press Right)! Scratchy low buzz = Defective (press Left)!",
     cat: 'action',
     desc: 'Prüfe Teile am Fließband: Sortiere fehlerhafte Teile mit Links und fehlerfreie mit Rechts aus!',
     tutorial: 'Qualitätskontrolle: Sauberer hoher Ton = Gutes Teil (Rechts drücken)! Kratziger tiefer Ton = Ausschuss (Links drücken)!',
@@ -638,6 +698,9 @@ const MINI_GAMES = [
   {
     id: 'audio_juggler',
     title: 'Audio Juggler',
+    title_en: "Audio Juggler",
+    desc_en: "Keep three balls in the air: Catch the left ball with Left, right ball with Right!",
+    tutorial_en: "Audio Juggler: Balls arc rhythmically left and right. Press the matching direction before the ball hits the ground!",
     cat: 'action',
     desc: 'Halte drei Bälle in der Luft: Fange den linken Ball mit Links, den rechten mit Rechts!',
     tutorial: 'Audio Juggler: Bälle fliegen im Rhythmus links und rechts. Drücke die entsprechende Taste rechtzeitig vor dem Bodenkontakt!',
@@ -663,6 +726,9 @@ const MINI_GAMES = [
   {
     id: 'audio_sniper',
     title: 'Audio Sniper',
+    title_en: "Audio Sniper",
+    desc_en: "Scope your target in 3D space, listen to your heartbeat, and fire with Action!",
+    tutorial_en: "Audio Sniper: Pan your scope with Left and Right. When the sound is dead centered and your heartbeat slows, fire with Action!",
     cat: 'action',
     desc: 'Visiere das Ziel im Raum an, lausche dem Herzschlag und schieße mit Aktion!',
     tutorial: 'Audio Sniper: Drehe das Visier mit Links und Rechts. Wenn der Ton genau zentriert ist und dein Herzschlag ruhig schlägt, feuere mit Aktion!',
@@ -692,6 +758,9 @@ const MINI_GAMES = [
   {
     id: 'audio_fencer',
     title: 'Audio Fechter',
+    title_en: "Audio Fencer",
+    desc_en: "Duel with rapiers: Parry incoming thrusts with Left and counter-attack with Right!",
+    tutorial_en: "Audio Fencer: When you hear the blade clash, parry immediately with Left. When your opponent is exposed, strike back with Right!",
     cat: 'speech',
     desc: 'Reagiere im Fechtduell: Pariere feindliche Klingenstöße mit Links und greife mit Rechts an!',
     tutorial: 'Audio Fechter: Klirrt der Degen, pariere sofort mit Links. Ist der Gegner offen, setze den Gegenstoß mit Rechts!',
@@ -719,6 +788,9 @@ const MINI_GAMES = [
   {
     id: 'audio_lumberjack',
     title: 'Audio Holzfäller',
+    title_en: "Audio Lumberjack",
+    desc_en: "Chop the tree trunk: Press Action to swing and dodge falling branches with Left/Right!",
+    tutorial_en: "Audio Lumberjack: Chop with Action. If a branch cracks on the left, dodge right. If on the right, dodge left!",
     cat: 'speech',
     desc: 'Hacke den Baumstamm: Drücke Aktion zum Schlagen und weiche fallenden Ästen mit Links/Rechts aus!',
     tutorial: 'Audio Holzfäller: Hacke mit Aktion. Knackt ein Ast links, weiche nach rechts aus. Knackt er rechts, weiche nach links aus!',
@@ -751,6 +823,9 @@ const MINI_GAMES = [
   {
     id: 'rhythm_blacksmith',
     title: 'Audio-Schmiede',
+    title_en: "Audio Blacksmith",
+    desc_en: "Forge glowing blades to the rhythmic beat of the hammer!",
+    tutorial_en: "Audio Blacksmith: Listen to the bellows beat. Strike your hammer with Action right onto the anvil on beat!",
     cat: 'action',
     desc: 'Schmiede Klingen im perfekten Hammertakt!',
     tutorial: 'Audio-Schmiede: Höre den Takt des Blasebalgs. Schlage den Hammer mit Aktion genau auf den Amboss!',
@@ -777,6 +852,9 @@ const MINI_GAMES = [
   {
     id: 'audio_battleship',
     title: 'Audio-Schiffeversenken',
+    title_en: "Audio Battleship",
+    desc_en: "Scan radar for enemy warships and launch torpedoes!",
+    tutorial_en: "Audio Battleship: Rotate the periscope with Left and Right. When the ping is loudest and centered, press Action to fire!",
     cat: 'logic',
     desc: 'Scanne das Radar nach feindlichen Schiffen und feuere Torpedos ab!',
     tutorial: 'Audio-Schiffeversenken: Bewege das Periskop mit Links und Rechts. Wenn das Pingsignal am stärksten zentriert ist, drücke Aktion!',
@@ -806,6 +884,9 @@ const MINI_GAMES = [
   {
     id: 'audio_waiter',
     title: 'Audio-Kellner',
+    title_en: "Audio Waiter",
+    desc_en: "Serve thirsty patrons on call: Deliver drinks to Left, Right, or Center!",
+    tutorial_en: "Audio Waiter: Listen to guest shouts across the hall. Deliver drinks with Left, Right, or Action to the center!",
     cat: 'action',
     desc: 'Bediente durstige Gäste auf Zuruf: Bringe Getränke nach Links, Rechts oder Mitte!',
     tutorial: 'Audio-Kellner: Höre die Rufe der Gäste aus den verschiedenen Ecken des Saals. Bringe die Bestellung mit Links, Rechts oder Aktion zur Mitte!',
@@ -832,6 +913,9 @@ const MINI_GAMES = [
   {
     id: 'audio_bouncer',
     title: 'Audio-Türsteher',
+    title_en: "Audio Club Bouncer",
+    desc_en: "Check guests at the club door: Admit with Right, turn away with Left!",
+    tutorial_en: "Audio Club Bouncer: Guests whisper their password. If the harmony is sweet, let them in with Right. If it sounds discordant, reject them with Left!",
     cat: 'logic',
     desc: 'Prüfe Gäste an der Clubtür: Einlass gewähren mit Rechts, abweisen mit Links!',
     tutorial: 'Audio-Türsteher: Gäste nennen ihr Codewort. Passt die Tonharmonie, lasse sie mit Rechts rein. Klingt es schief, schicke sie mit Links weg!',
@@ -857,6 +941,9 @@ const MINI_GAMES = [
   {
     id: 'sound_memo',
     title: 'Sound-Memo (Klang-Memory)',
+    title_en: "Sound Memory",
+    desc_en: "Memorize the sequence of tones and repeat it flawlessly!",
+    tutorial_en: "Sound Memory: The machine plays a sequence of notes. Repeat it using Left and Right!",
     cat: 'logic',
     desc: 'Merke dir die Tonfolge und wiederhole sie fehlerfrei!',
     tutorial: 'Sound-Memo: Der Computer spielt eine Tonfolge vor. Wiederhole sie danach mit Links und Rechts!',
@@ -900,6 +987,9 @@ const MINI_GAMES = [
   {
     id: 'simon_says',
     title: 'Simon Says (Senso)',
+    title_en: "Simon Says (Senso)",
+    desc_en: "Repeat 3-way sound patterns: Left, Action, or Right!",
+    tutorial_en: "Simon Says: Pay attention to the notes! Low = Left, Mid = Action, High = Right. Repeat the sequence exactly!",
     cat: 'logic',
     desc: 'Wiederhole 3-Wege-Tonmuster: Links, Aktion oder Rechts!',
     tutorial: 'Simon Says: Achte auf die Töne! Tief = Links, Mittel = Aktion, Hoch = Rechts. Wiederhole die Sequenz exakt!',
@@ -942,6 +1032,9 @@ const MINI_GAMES = [
   {
     id: 'safe_cracker',
     title: 'Tresor-Knacker',
+    title_en: "Safe Cracker",
+    desc_en: "Spin the dial and listen for the metallic tumbler click!",
+    tutorial_en: "Safe Cracker: Turn the combination dial from 0 to 20 with Left and Right. When you hear a loud mechanical click, the digit has unlocked!",
     cat: 'logic',
     desc: 'Drehe die Tresorscheibe und lausche auf das metallische Einrasten!',
     tutorial: 'Tresor-Knacker: Drehe mit Links und Rechts die Scheibe von 0 bis 20. Hörst du ein lautes Klicken, ist die Ziffer eingerastet!',
@@ -975,6 +1068,9 @@ const MINI_GAMES = [
   {
     id: 'number_guess',
     title: 'Zahlen-Raten',
+    title_en: "Number Guess",
+    desc_en: "Guess the secret number: Hear whether your guess is too high or too low!",
+    tutorial_en: "Number Guess: Adjust your number with Left (-1) and Right (+1). Confirm with Action. A higher pitch means: The target number is higher!",
     cat: 'logic',
     desc: 'Errate die Geheimzahl: Höre, ob deine Zahl zu hoch oder zu tief ist!',
     tutorial: 'Zahlen-Raten: Verändere die Zahl mit Links (-1) und Rechts (+1). Bestätige mit Aktion. Ein hoher Ton bedeutet: Die gesuchte Zahl ist größer!',
@@ -1005,6 +1101,9 @@ const MINI_GAMES = [
   {
     id: 'math_blitz',
     title: 'Mathe-Blitz',
+    title_en: "Math Blitz",
+    desc_en: "Mental arithmetic under pressure: Is the equation correct? Left = False, Right = True!",
+    tutorial_en: "Math Blitz: Hear the math equation. If the announced answer is correct, press Right. If false, press Left!",
     cat: 'logic',
     desc: 'Kopfrechnen unter Zeitdruck: Stimmt das Ergebnis? Links = Falsch, Rechts = Wahr!',
     tutorial: 'Mathe-Blitz: Höre die Rechenaufgabe. Ist das genannte Ergebnis richtig, drücke Rechts. Ist es falsch, drücke Links!',
@@ -1031,6 +1130,9 @@ const MINI_GAMES = [
   {
     id: 'code_breaker',
     title: 'Code-Knacker',
+    title_en: "Code Breaker",
+    desc_en: "Audio Mastermind: Decipher the 3-digit secret tone combination!",
+    tutorial_en: "Code Breaker: Cycle note colors with Left and Right, confirm with Action. Double chimes tell you how many notes are in the right position!",
     cat: 'logic',
     desc: 'Mastermind mit Tönen: Finde den 3-stelligen Farb-Code heraus!',
     tutorial: 'Code-Knacker: Ändere die Tonfarbe mit Links und Rechts, bestätige mit Aktion. Ein Doppelton zeigt die Anzahl richtiger Töne!',
@@ -1059,6 +1161,9 @@ const MINI_GAMES = [
   {
     id: 'dial_master',
     title: 'Audio-Schlossknacker',
+    title_en: "Audio Lockpicker",
+    desc_en: "Tune out the interference frequencies to spring the lock open!",
+    tutorial_en: "Audio Lockpicker: Listen to the frequency oscillation. Fine-tune with Left and Right until flutter fades to silence, then open with Action!",
     cat: 'logic',
     desc: 'Finde die Nullfrequenz des Schlosses durch feines Nachjustieren!',
     tutorial: 'Audio-Schlossknacker: Höre auf die Frequenzüberlagerung. Justiere mit Links und Rechts, bis das Flattern ganz verstummt, und öffne mit Aktion!',
@@ -1139,6 +1244,9 @@ const MINI_GAMES = [
   {
     id: 'spatial_memory',
     title: 'Audio-Kompass-Memory',
+    title_en: "Audio Compass Memory",
+    desc_en: "Remember 3D sound locations and recall their directions!",
+    tutorial_en: "Audio Compass Memory: Chimes sound on the left or right. Memorize their stereo positions and tap them in order!",
     cat: 'logic',
     desc: 'Merke dir Geräusch-Positionen im 3D-Stereoraum und rufe sie wieder ab!',
     tutorial: 'Audio-Kompass-Memory: Ein Ton erklingt links oder rechts. Merke dir die Positionen und tippe sie danach an!',
@@ -1201,6 +1309,9 @@ const MINI_GAMES = [
   {
     id: 'pitch_perfect',
     title: 'Tonhöhen-Meister',
+    title_en: "Pitch Perfect",
+    desc_en: "Adjust your tone pitch with Left/Right until it matches the reference tone!",
+    tutorial_en: "Pitch Perfect: First hear the target note. Tune your pitch with Left (lower) and Right (higher), then confirm with Action!",
     cat: 'logic',
     desc: 'Verändere deine Tonhöhe mit Links/Rechts, bis sie exakt dem Referenzton gleicht!',
     tutorial: 'Tonhöhen-Meister: Erst hörst du den Zielton. Stimme deinen eigenen Ton mit Links (tiefer) und Rechts (höher) ab und drücke Aktion!',
@@ -1227,6 +1338,9 @@ const MINI_GAMES = [
   {
     id: 'audio_math',
     title: 'Audio Math',
+    title_en: "Audio Math Quiz",
+    desc_en: "Solve math challenges by choosing Option A (Left) or Option B (Right)!",
+    tutorial_en: "Audio Math Quiz: Hear the math problem. Select Answer 1 with Left or Answer 2 with Right!",
     cat: 'speech',
     desc: 'Löse wechselnde Mathe-Aufgaben durch Auswahl der Antwort A (Links) oder B (Rechts)!',
     tutorial: 'Audio Math: Höre die Rechenaufgabe. Wähle Antwort 1 mit Links oder Antwort 2 mit Rechts!',
@@ -1255,6 +1369,9 @@ const MINI_GAMES = [
   {
     id: 'audio_lockpicker',
     title: 'Audio Lockpicker',
+    title_en: "Tumbler Lockpicker",
+    desc_en: "Raise the cylinder pins and set them in place with precision!",
+    tutorial_en: "Tumbler Lockpicker: Lift the pin with Right. When the chime sounds crisp and clear, lock it in with Action!",
     cat: 'speech',
     desc: 'Hebe die Stifte des Zylinderschlosses an und fixiere sie mit Gefühl!',
     tutorial: 'Audio Lockpicker: Hebe den Stift mit Rechts an. Wenn der Ton rein klingt, arretiere ihn mit Aktion!',
@@ -1282,6 +1399,9 @@ const MINI_GAMES = [
   {
     id: 'audio_simon_says',
     title: 'Audio Simon Says',
+    title_en: "Audio Simon Says",
+    desc_en: "Only obey commands when Simon says so!",
+    tutorial_en: "Audio Simon Says: If you hear \"Simon says: Left!\", press Left. If he just says \"Right!\", do NOT press anything!",
     cat: 'speech',
     desc: 'Befolgen nur, wenn Simon es sagt!',
     tutorial: 'Audio Simon Says: Hörst du "Simon sagt: Links!", drücke Links. Sagt er nur "Rechts!", darfst du NICHT drücken!',
@@ -1310,6 +1430,9 @@ const MINI_GAMES = [
   {
     id: 'frequency_jammer',
     title: 'Frequenz-Jäger',
+    title_en: "Frequency Tuner",
+    desc_en: "Turn the radio dial and find the clear station hidden in static!",
+    tutorial_en: "Frequency Tuner: Sweep through static frequencies with Left and Right. As soon as a clear broadcast emerges, lock in with Action!",
     cat: 'nav',
     desc: 'Drehe am Radio-Tuner und finde den klaren Sender im Äther!',
     tutorial: 'Frequenz-Jäger: Rausche mit Links und Rechts durch die Frequenzen. Sobald eine klare Melodie erklingt, drücke Aktion!',
@@ -1338,6 +1461,9 @@ const MINI_GAMES = [
   {
     id: 'stairs_of_fate',
     title: 'Treppe des Schicksals',
+    title_en: "Stairs of Fate",
+    desc_en: "Climb 10 mysterious steps. If a plank creaks, dodge immediately!",
+    tutorial_en: "Stairs of Fate: Ascend one step at a time with Action. If the board creaks ominously, jump aside with Left or Right!",
     cat: 'nav',
     desc: 'Steige 10 Stufen empor. Knarrt eine Stufe, weiche sofort zur Seite aus!',
     tutorial: 'Treppe des Schicksals: Steige mit Aktion eine Stufe hoch. Knarrt die Stufe, springe schnell mit Links oder Rechts zur Seite!',
@@ -1366,6 +1492,9 @@ const MINI_GAMES = [
   {
     id: 'golden_mic',
     title: 'Das Goldene Mikrofon',
+    title_en: "The Golden Microphone",
+    desc_en: "Locate the microphone in 3D stereo acoustic space and center it!",
+    tutorial_en: "The Golden Microphone: The beacon beeps on the left or right. Tap Left or Right to steer it into the center. Press Action when perfectly centered!",
     cat: 'nav',
     desc: 'Lokalisiere das Mikrofon im 3D-Stereo-Raum und zentriere es!',
     tutorial: 'Das Goldene Mikrofon: Das Signal piept links oder rechts. Tippe Links oder Rechts, um es in die Mitte zu holen. Drücke Aktion, wenn es genau zentriert ist!',
@@ -1396,6 +1525,9 @@ const MINI_GAMES = [
   {
     id: 'audio_maze',
     title: 'Audio-Labyrinth',
+    title_en: "Audio Labyrinth",
+    desc_en: "Navigate the invisible maze using only acoustic echoes!",
+    tutorial_en: "Audio Labyrinth: Turn with Left and Right. High clear chime = Open path ahead! Dull thud = Wall! Step forward with Action!",
     cat: 'nav',
     desc: 'Finde den Ausgang aus dem unsichtbaren Irrgarten nur anhand von Echos!',
     tutorial: 'Audio-Labyrinth: Drehe dich mit Links und Rechts. Hoher Klingelton = Freier Weg nach vorn! Dumpfer Schlag = Wand! Gehe mit Aktion voran!',
@@ -1424,6 +1556,9 @@ const MINI_GAMES = [
   {
     id: 'echolot',
     title: 'Echolot',
+    title_en: "Sonar Echo Depth",
+    desc_en: "Estimate the distance to the cavern wall from the echo delay!",
+    tutorial_en: "Sonar Echo Depth: Emit a sonar ping with Action. Gauge the echo time and choose the matching distance with Left or Right!",
     cat: 'nav',
     desc: 'Schätze die Entfernung zur Felswand anhand der Echo-Verzögerung!',
     tutorial: 'Echolot: Sende mit Aktion ein Pingsignal aus. Zähle die Zeit bis zum Echo und wähle die passende Entfernung mit Links oder Rechts!',
@@ -1449,6 +1584,9 @@ const MINI_GAMES = [
   {
     id: 'blind_farm',
     title: 'Die Blinde Farm',
+    title_en: "The Blind Farm",
+    desc_en: "Find the animal in the barn: Wander between stalls to discover the treasure!",
+    tutorial_en: "The Blind Farm: Move through the 10 barn stalls using Left and Right. Open the stall door with Action!",
     cat: 'nav',
     desc: 'Finde das Tier im Stall: Wandere von Stall zu Stall und entdecke die Schatzkiste!',
     tutorial: 'Die Blinde Farm: Gehe mit Links und Rechts durch die 10 Stallboxen. Öffne die Box mit Aktion!',
@@ -1474,6 +1612,9 @@ const MINI_GAMES = [
   {
     id: 'space_flight',
     title: 'Weltraum-Flug',
+    title_en: "Deep Space Flight",
+    desc_en: "Dodge incoming meteorites hurtling through deep space!",
+    tutorial_en: "Deep Space Flight: Hear a meteor roaring from the left? Steer right with Right. Hear it on the right? Fly left with Left!",
     cat: 'nav',
     desc: 'Weiche herannahenden Meteoriten im tiefen Weltraum aus!',
     tutorial: 'Weltraum-Flug: Hörst du den Meteorit von links herandonnern, steuere mit Rechts nach rechts aus. Hörst du ihn rechts, fliege nach links!',
@@ -1498,6 +1639,9 @@ const MINI_GAMES = [
   {
     id: 'animal_radar',
     title: 'Tier-Radar',
+    title_en: "Animal Radar",
+    desc_en: "Track the animal call and lock your scanner onto it!",
+    tutorial_en: "Animal Radar: Aim your acoustic sensor with Left and Right. When the animal call sounds equally loud in both ears, capture it with Action!",
     cat: 'nav',
     desc: 'Peile das Rufen des Tieres an und fange es genau im Visier!',
     tutorial: 'Tier-Radar: Richte den Empfänger mit Links und Rechts aus. Erklingt der Tierlaut in beiden Ohren gleich laut, fange es mit Aktion!',
@@ -1523,6 +1667,9 @@ const MINI_GAMES = [
   {
     id: 'mystery_door',
     title: 'Geheimnisvolle Türen',
+    title_en: "Mystery Doors",
+    desc_en: "Choose Door 1, 2, or 3 and listen for the magical breeze!",
+    tutorial_en: "Mystery Doors: Switch between doors 1, 2, and 3 using Left and Right. If you hear a magical hum, enter through with Action!",
     cat: 'nav',
     desc: 'Wähle Tür 1, 2 oder 3 und lausche auf den Windzug!',
     tutorial: 'Geheimnisvolle Türen: Schalte mit Links und Rechts zwischen Tür 1, 2 und 3 um. Hörst du ein magisches Summen, tritt mit Aktion ein!',
@@ -1548,6 +1695,9 @@ const MINI_GAMES = [
   {
     id: 'submarine_sonar',
     title: 'Sonar-U-Boot',
+    title_en: "Submarine Sonar",
+    desc_en: "Locate hostile submarines using deep sea sonar tracking!",
+    tutorial_en: "Submarine Sonar: Turn the helm with Left and Right. When the sonar echo bounces dead-center, fire your torpedo with Action!",
     cat: 'nav',
     desc: 'Lokalisiere feindliche U-Boote durch Sonar-Ortung in der Tiefsee!',
     tutorial: 'Sonar-U-Boot: Drehe das Ruder mit Links und Rechts. Wenn der Sonarping exakt in der Mitte widerhallt, schieße den Torpedo mit Aktion ab!',
@@ -1575,6 +1725,9 @@ const MINI_GAMES = [
   {
     id: 'audio_train',
     title: 'Audio-Zug-Weiche',
+    title_en: "Train Switchboard",
+    desc_en: "Switch railroad tracks in time for the oncoming express train!",
+    tutorial_en: "Train Switchboard: The train approaches fast. Listen to dispatch and flip the track switch Left or Right before it passes!",
     cat: 'nav',
     desc: 'Stelle die Weichen für den Expresszug nach Links oder Rechts!',
     tutorial: 'Audio-Zug-Weiche: Der Zug naht. Höre die Durchsage und lege die Weiche rechtzeitig nach Links oder Rechts um!',
@@ -1599,6 +1752,9 @@ const MINI_GAMES = [
   {
     id: 'echo_hunter',
     title: 'Echo-Jäger',
+    title_en: "Echo Hunter",
+    desc_en: "Follow the caller echo deep inside the limestone cave!",
+    tutorial_en: "Echo Hunter: A voice calls out into the cavern. Turn toward it with Left or Right and confirm with Action!",
     cat: 'sim',
     desc: 'Folge dem Echo des Rufers in der Tropfsteinhöhle!',
     tutorial: 'Echo-Jäger: Ein Ruf erschallt. Drehe dich mit Links oder Rechts dorthin und bestätige mit Aktion!',
@@ -1621,6 +1777,9 @@ const MINI_GAMES = [
   {
     id: 'audio_archery_pro',
     title: 'Audio-Bogenschießen Pro',
+    title_en: "Audio Archery Pro",
+    desc_en: "Masterclass archery: Compensate for wind drift on the left and right!",
+    tutorial_en: "Audio Archery Pro: Wind whistles past. Counter-steer with Left and Right against wind drift, then loose your arrow with Action!",
     cat: 'action',
     desc: 'Meisterklasse Bogenschießen: Gleiche Windgeräusche links und rechts aus!',
     tutorial: 'Bogenschießen Pro: Der Wind pfeift. Steuere mit Links und Rechts gegen die Winddrift an und schieße mit Aktion!',
@@ -1771,6 +1930,9 @@ const MINI_GAMES = [
   {
     id: 'capital_hunter',
     title: 'Hauptstadt-Jäger',
+    title_en: "Capital City Hunter",
+    desc_en: "World capitals quiz: Is the announced capital correct? Left = No, Right = Yes!",
+    tutorial_en: "Capital City Hunter: Listen to the country and capital. If it is correct, tap Right (Yes). If incorrect, tap Left (No)!",
     cat: 'speech',
     desc: 'Hauptstädte-Quiz: Stimmt die genannte Hauptstadt? Links = Nein, Rechts = Ja!',
     tutorial: 'Hauptstadt-Jäger: Höre die Aussage. Ist die Hauptstadt korrekt, tippe Rechts (Ja). Wenn nicht, tippe Links (Nein)!',
@@ -1801,6 +1963,9 @@ const MINI_GAMES = [
   {
     id: 'morse_runner',
     title: 'Morse-Läufer',
+    title_en: "Morse Runner",
+    desc_en: "Learn Morse signals: Was that a short Dit or a long Dah?",
+    tutorial_en: "Morse Runner: A Morse signal plays. Was it short (Dit)? Press Left. Was it long (Dah)? Press Right!",
     cat: 'action',
     desc: 'Lerne Morsezeichen: War das ein Dit (kurz) oder ein Dah (lang)?',
     tutorial: 'Morse-Läufer: Ein Morsesignal ertönt. War es kurz (Dit), drücke Links. War es lang (Dah), drücke Rechts!',
@@ -1825,6 +1990,9 @@ const MINI_GAMES = [
   {
     id: 'audio_morse_code',
     title: 'Audio-Morsen',
+    title_en: "Audio Morse Code",
+    desc_en: "Transmit the distress signal S-O-S using dots and dashes!",
+    tutorial_en: "Audio Morse Code: Transmit the S O S distress call: Three short dots with Left, three long dashes with Right, three short dots with Left!",
     cat: 'logic',
     desc: 'Übermittle das Notsignal S-O-S mit Punkten und Strichen!',
     tutorial: 'Audio-Morsen: Tippe das Notsignal S O S: Drei kurze Töne mit Links, drei lange Töne mit Rechts, drei kurze mit Links!',
@@ -1846,6 +2014,9 @@ const MINI_GAMES = [
   {
     id: 'audio_boss',
     title: 'Audio-Bosskampf',
+    title_en: "Audio Boss Battle",
+    desc_en: "Confront the giant Sound Titan: Learn its attack tells and counter-attack!",
+    tutorial_en: "Audio Boss Battle: When the boss roars on the left, dodge right. If on the right, dodge left. When it charges energy, strike with Action!",
     cat: 'action',
     desc: 'Stelle dich dem Sound-Monster: Lausche den Angriffsmustern und kontere!',
     tutorial: 'Audio-Bosskampf: Wenn der Boss links brüllt, weiche nach rechts aus. Brüllt er rechts, weiche nach links aus. Lädt er Energie, schlage mit Aktion zu!',
@@ -1873,6 +2044,9 @@ const MINI_GAMES = [
   {
     id: 'audio_spaceship',
     title: 'Audio-Raumschiff-Schlacht',
+    title_en: "Spaceship Dogfight",
+    desc_en: "Defend your orbital station from marauders in 360-degree space!",
+    tutorial_en: "Spaceship Dogfight: Raiders approach from the left or right. Lock on and vaporize them with the corresponding button!",
     cat: 'action',
     desc: 'Verteidige deine Raumstation vor Angreifern im 360-Grad-Sektor!',
     tutorial: 'Audio-Raumschiff-Schlacht: Feinde nähern sich von links oder rechts. Zerstöre sie mit der passenden Taste!',
@@ -1930,6 +2104,9 @@ const MINI_GAMES = [
   {
     id: 'audio_bowling',
     title: 'Audio-Bowling',
+    title_en: "Audio Bowling",
+    desc_en: "Build your swing momentum and release the ball to strike all pins!",
+    tutorial_en: "Audio Bowling: Pitch builds as your swing winds up. Release with Action at the crest of the tone to bowl a strike!",
     cat: 'sim',
     desc: 'Hole Schwung und lasse die Kugel im richtigen Moment auf die Pins rollen!',
     tutorial: 'Audio-Bowling: Die Schwungstärke steigt akustisch an. Drücke Aktion beim höchsten Ton, um alle 10 Pins umzuwerfen!',
@@ -1959,6 +2136,9 @@ const MINI_GAMES = [
   {
     id: 'rps_extreme',
     title: 'Schere, Stein, Papier Extreme',
+    title_en: "Rock Paper Scissors Extreme",
+    desc_en: "The classic duel: Left = Scissors, Action = Rock, Right = Paper!",
+    tutorial_en: "Rock Paper Scissors: Choose Scissors with Left, Rock with Action, or Paper with Right!",
     cat: 'sim',
     desc: 'Der Klassiker: Links = Schere, Aktion = Stein, Rechts = Papier!',
     tutorial: 'Schere, Stein, Papier: Wähle Schere mit Links, Stein mit Aktion oder Papier mit Rechts!',
@@ -1982,6 +2162,9 @@ const MINI_GAMES = [
   {
     id: 'audio_slots',
     title: 'Audio-Slots (Spielautomat)',
+    title_en: "Audio Slot Machine",
+    desc_en: "Spin the 3 mechanical reels and stop them for the jackpot!",
+    tutorial_en: "Audio Slot Machine: Press Action to start the 3 reels spinning. Tap Action three times in rhythm to brake each reel into place!",
     cat: 'sim',
     desc: 'Drehe die Walzen und stoppe sie für den großen Jackpot!',
     tutorial: 'Audio-Slots: Drücke Aktion, um die 3 Walzen zu starten. Tippe dreimal Aktion im Takt, um sie anzuhalten!',
@@ -2073,6 +2256,9 @@ const MINI_GAMES = [
   {
     id: 'audio_minesweeper',
     title: 'Audio-Minenräumer',
+    title_en: "Audio Minesweeper",
+    desc_en: "Cautious mine detector: The Geiger counter clicks faster near buried explosives!",
+    tutorial_en: "Audio Minesweeper: Tread forward with Left and Right. When the Geiger crackle turns frantically fast, flag the mine with Action!",
     cat: 'logic',
     desc: 'Tastender Minensucher: Der Geigerzähler warnt vor verborgenen Sprengsätzen!',
     tutorial: 'Audio-Minenräumer: Bewege dich mit Links und Rechts voran. Wenn das Knistern des Geigerzählers zu schnell wird, markiere die Mine mit Aktion!',

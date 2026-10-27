@@ -15,6 +15,7 @@
     <div class="header-title">
       <h1>🎮 Audio Mini Games</h1>
       <span class="sub-badge" id="app-version">v2.2 • 75 Spiele</span>
+      <span class="sub-badge" id="gamepad-badge" style="display: none; background: #059669; color: #fff;">🎮 Controller</span>
     </div>
     <div class="header-actions">
       <button type="button" class="btn-icon" id="btn-lang" aria-label="Sprache wechseln (Deutsch / English)" onclick="toggleLanguage()">🇩🇪</button>
@@ -50,12 +51,12 @@
   <!-- SPIEL-ANSICHT -->
   <section id="view-game" class="view-screen" aria-label="Laufendes Spiel" style="display: none;">
     <div class="game-hud">
-      <button type="button" class="btn-hud" onclick="leaveGame()" aria-label="Spiel beenden und zurück zum Menü">◀ Menü</button>
+      <button type="button" class="btn-hud" id="btn-hud-menu" onclick="leaveGame()" aria-label="Spiel beenden und zurück zum Menü">◀ Menü</button>
       <div class="hud-center">
         <h2 id="game-hud-title">Spielname</h2>
         <div class="score-display" id="game-hud-score">Punkte: 0</div>
       </div>
-      <button type="button" class="btn-hud" onclick="repeatTutorial()" aria-label="Anleitung nochmals anhören">❓ Hilfe</button>
+      <button type="button" class="btn-hud" id="btn-hud-help" onclick="repeatTutorial()" aria-label="Anleitung nochmals anhören">❓ Hilfe</button>
     </div>
 
     <div class="visualizer-box" aria-hidden="true">
@@ -76,27 +77,27 @@
       <div class="touch-row-top">
         <button type="button" class="touch-btn touch-up" id="btn-touch-up" aria-label="Oben steuern">
           <span class="touch-icon">▲</span>
-          <span class="touch-label">OBEN</span>
+          <span class="touch-label" id="touch-label-up">OBEN</span>
         </button>
       </div>
       <div class="touch-row-mid">
         <button type="button" class="touch-btn touch-left" id="btn-touch-left" aria-label="Links steuern">
           <span class="touch-icon">◀</span>
-          <span class="touch-label">LINKS</span>
+          <span class="touch-label" id="touch-label-left">LINKS</span>
         </button>
         <button type="button" class="touch-btn touch-action" id="btn-touch-action" aria-label="Aktion ausführen / Bestätigen">
           <span class="touch-icon">🔘</span>
-          <span class="touch-label">AKTION</span>
+          <span class="touch-label" id="touch-label-action">AKTION</span>
         </button>
         <button type="button" class="touch-btn touch-right" id="btn-touch-right" aria-label="Rechts steuern">
           <span class="touch-icon">▶</span>
-          <span class="touch-label">RECHTS</span>
+          <span class="touch-label" id="touch-label-right">RECHTS</span>
         </button>
       </div>
       <div class="touch-row-bot">
         <button type="button" class="touch-btn touch-down" id="btn-touch-down" aria-label="Unten steuern">
           <span class="touch-icon">▼</span>
-          <span class="touch-label">UNTEN</span>
+          <span class="touch-label" id="touch-label-down">UNTEN</span>
         </button>
       </div>
     </div>
@@ -106,23 +107,23 @@
   <div id="modal-feedback" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-title" style="display: none;">
     <div class="modal-card">
       <h2 id="feedback-title">💬 Feedback & Ideen senden</h2>
-      <p style="font-size: 0.9rem; color: #a0aec0; margin: 0;">Dein Feedback landet direkt bei Entwickler Lauju in der Feedback-Zentrale.</p>
+      <p id="feedback-desc" style="font-size: 0.9rem; color: #a0aec0; margin: 0;">Dein Feedback landet direkt bei Entwickler Lauju in der Feedback-Zentrale.</p>
       
       <div class="setting-group">
-        <label for="fb-sender">Dein Name / Alias (optional):</label>
+        <label for="fb-sender" id="label-fb-sender">Dein Name / Alias (optional):</label>
         <input type="text" id="fb-sender" class="search-input" placeholder="z. B. Alex oder Anonym">
       </div>
 
       <div class="setting-group">
-        <label for="fb-text">Deine Nachricht / Fehlerbericht / Spiel-Idee:</label>
+        <label for="fb-text" id="label-fb-text">Deine Nachricht / Fehlerbericht / Spiel-Idee:</label>
         <textarea id="fb-text" class="search-input" rows="4" style="resize: vertical; font-family: inherit;" placeholder="Was gefällt dir? Was können wir verbessern?"></textarea>
       </div>
 
       <div id="fb-status" aria-live="polite" style="min-height: 24px; font-weight: bold; font-size: 0.95rem;"></div>
 
       <div style="display: flex; gap: 10px; margin-top: 6px;">
-        <button type="button" class="btn-primary" style="flex: 2;" onclick="sendFeedback()">📤 Absenden</button>
-        <button type="button" class="btn-danger" style="flex: 1;" onclick="closeFeedbackModal()">Abbrechen</button>
+        <button type="button" class="btn-primary" id="btn-fb-submit" style="flex: 2;" onclick="sendFeedback()">📤 Absenden</button>
+        <button type="button" class="btn-danger" id="btn-fb-cancel" style="flex: 1;" onclick="closeFeedbackModal()">Abbrechen</button>
       </div>
     </div>
   </div>
@@ -132,34 +133,34 @@
     <div class="modal-card">
       <h2 id="settings-title">⚙️ Einstellungen & Barrierefreiheit</h2>
       <div class="setting-group">
-        <label for="set-language-select">Sprache / Language:</label>
+        <label for="set-language-select" id="label-language-select">Sprache / Language:</label>
         <select id="set-language-select" class="form-select" onchange="onLanguageSelect(this.value)">
           <option value="de">Deutsch (DE)</option>
           <option value="en">English (EN)</option>
         </select>
       </div>
       <div class="setting-group">
-        <label for="set-volume-effects">Lautstärke Soundeffekte (Stereo):</label>
+        <label for="set-volume-effects" id="label-vol-effects">Lautstärke Soundeffekte (Stereo):</label>
         <input type="range" id="set-volume-effects" min="0" max="100" value="80" onchange="updateAudioSettings()">
       </div>
       <div class="setting-group">
-        <label for="set-volume-tts">Lautstärke Sprachassistent:</label>
+        <label for="set-volume-tts" id="label-vol-tts">Lautstärke Sprachassistent:</label>
         <input type="range" id="set-volume-tts" min="0" max="100" value="90" onchange="updateAudioSettings()">
       </div>
       <div class="setting-group">
-        <label for="set-speech-rate">Sprechgeschwindigkeit:</label>
+        <label for="set-speech-rate" id="label-speech-rate">Sprechgeschwindigkeit:</label>
         <input type="range" id="set-speech-rate" min="5" max="20" value="11" onchange="updateAudioSettings()">
       </div>
       <div class="setting-group">
         <label>
           <input type="checkbox" id="set-vibrate" checked onchange="updateAudioSettings()">
-          Haptisches Vibrations-Feedback bei Aktionen
+          <span id="label-vibrate-text">Haptisches Vibrations-Feedback bei Aktionen</span>
         </label>
       </div>
       <div class="setting-group-actions">
-        <button type="button" class="btn-danger" onclick="resetAllHighscores()">🗑️ Rekorde zurücksetzen</button>
+        <button type="button" class="btn-danger" id="btn-reset-highscores" onclick="resetAllHighscores()">🗑️ Rekorde zurücksetzen</button>
       </div>
-      <button type="button" class="btn-primary" onclick="closeSettings()">Fertig & Speichern</button>
+      <button type="button" class="btn-primary" id="btn-save-settings" onclick="closeSettings()">Fertig & Speichern</button>
     </div>
   </div>
 

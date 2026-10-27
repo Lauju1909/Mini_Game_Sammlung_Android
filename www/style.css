@@ -146,6 +146,15 @@ body {
   border-color: var(--accent);
 }
 
+.game-card:focus,
+.game-card.gamepad-focused {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 16px rgba(255, 204, 0, 0.6);
+  transform: scale(1.02);
+  background: #1c2128;
+}
+
 .game-info h3 {
   font-size: 1.15rem;
   margin-bottom: 4px;

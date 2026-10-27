@@ -3,6 +3,112 @@ let currentGameInstance = null;
 let currentCategory = 'all';
 let searchQuery = '';
 let visualizerAnimId = null;
+let gamepadConnected = false;
+let focusedGameIndex = 0;
+let lastGamepadButtons = {};
+
+const UI_STRINGS = {
+  de: {
+    appVersion: 'v2.2 • 75 Spiele',
+    searchPlaceholder: '🔍 Spiel suchen...',
+    tabAll: 'Alle (75)',
+    tabAction: 'Action (30)',
+    tabLogic: 'Logik (17)',
+    tabNav: 'Navigation (12)',
+    tabSpeech: 'Wissen (10)',
+    tabSim: 'Simulation (6)',
+    btnMenu: '◀ Menü',
+    btnHelp: '❓ Hilfe',
+    touchUp: 'OBEN',
+    touchDown: 'UNTEN',
+    touchLeft: 'LINKS',
+    touchRight: 'RECHTS',
+    touchAction: 'AKTION',
+    hudStatus: 'Kopfhörer empfohlen für 3D-Stereo-Sound!',
+    scoreLabel: 'Punkte:',
+    settingsTitle: '⚙️ Einstellungen & Barrierefreiheit',
+    langSelectLabel: 'Sprache / Language:',
+    volEffectsLabel: 'Lautstärke Soundeffekte (Stereo):',
+    volTtsLabel: 'Lautstärke Sprachassistent:',
+    rateLabel: 'Sprechgeschwindigkeit:',
+    vibrateLabel: 'Haptisches Vibrations-Feedback bei Aktionen',
+    resetHighscores: '🗑️ Rekorde zurücksetzen',
+    saveSettings: 'Fertig & Speichern',
+    settingsOpened: 'Einstellungen geöffnet.',
+    settingsClosed: 'Einstellungen gespeichert.',
+    ttsOn: 'Sprachausgabe eingeschaltet.',
+    ttsOff: 'Sprachausgabe stummgeschaltet.',
+    noGames: 'Keine Spiele gefunden.',
+    backMenu: 'Zurück im Hauptmenü.',
+    langChanged: 'Deutsche Sprache ausgewählt.',
+    highScorePrefix: 'Rekord',
+    points: 'Punkte',
+    btnRandomAria: 'Zufälliges Spiel starten',
+    btnTtsAria: 'Sprachausgabe umschalten',
+    btnFeedbackAria: 'Feedback oder Idee senden',
+    btnSettingsAria: 'Einstellungen öffnen',
+    feedbackTitle: '💬 Feedback & Ideen senden',
+    feedbackDesc: 'Dein Feedback landet direkt bei Entwickler Lauju in der Feedback-Zentrale.',
+    fbSenderLabel: 'Dein Name / Alias (optional):',
+    fbSenderPlaceholder: 'z. B. Alex oder Anonym',
+    fbTextLabel: 'Deine Nachricht / Fehlerbericht / Spiel-Idee:',
+    fbTextPlaceholder: 'Was gefällt dir? Was können wir verbessern?',
+    fbSubmit: '📤 Absenden',
+    fbCancel: 'Abbrechen',
+    feedbackOpened: 'Feedback-Dialog geöffnet.',
+    feedbackClosed: 'Feedback geschlossen.'
+  },
+  en: {
+    appVersion: 'v2.2 • 75 Games',
+    searchPlaceholder: '🔍 Search game...',
+    tabAll: 'All (75)',
+    tabAction: 'Action (30)',
+    tabLogic: 'Logic (17)',
+    tabNav: 'Navigation (12)',
+    tabSpeech: 'Trivia (10)',
+    tabSim: 'Simulation (6)',
+    btnMenu: '◀ Menu',
+    btnHelp: '❓ Help',
+    touchUp: 'UP',
+    touchDown: 'DOWN',
+    touchLeft: 'LEFT',
+    touchRight: 'RIGHT',
+    touchAction: 'ACTION',
+    hudStatus: 'Headphones recommended for 3D stereo sound!',
+    scoreLabel: 'Score:',
+    settingsTitle: '⚙️ Settings & Accessibility',
+    langSelectLabel: 'Language / Sprache:',
+    volEffectsLabel: 'Sound Effects Volume (Stereo):',
+    volTtsLabel: 'Voice Assistant Volume:',
+    rateLabel: 'Speech Rate:',
+    vibrateLabel: 'Haptic Vibration Feedback for actions',
+    resetHighscores: '🗑️ Reset All Highscores',
+    saveSettings: 'Done & Save',
+    settingsOpened: 'Settings opened.',
+    settingsClosed: 'Settings saved.',
+    ttsOn: 'Voice output enabled.',
+    ttsOff: 'Voice output muted.',
+    noGames: 'No games found.',
+    backMenu: 'Back to main menu.',
+    langChanged: 'English language selected.',
+    highScorePrefix: 'High score',
+    points: 'points',
+    btnRandomAria: 'Start random game',
+    btnTtsAria: 'Toggle voice assistant',
+    btnFeedbackAria: 'Send feedback or game idea',
+    btnSettingsAria: 'Open settings',
+    feedbackTitle: '💬 Send Feedback & Ideas',
+    feedbackDesc: 'Your feedback goes directly to developer Lauju.',
+    fbSenderLabel: 'Your Name / Alias (optional):',
+    fbSenderPlaceholder: 'e.g. Alex or Anonymous',
+    fbTextLabel: 'Your message / bug report / game idea:',
+    fbTextPlaceholder: 'What do you like? What can we improve?',
+    fbSubmit: '📤 Submit',
+    fbCancel: 'Cancel',
+    feedbackOpened: 'Feedback dialog opened.',
+    feedbackClosed: 'Feedback closed.'
+  }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   loadSettings();
@@ -10,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTouchControls();
   setupSwipeControls();
   startVisualizer();
+  initGamepadSupport();
 
   // Android Back-Button Integration (Capacitor / Cordova)
   document.addEventListener('backbutton', (e) => {
@@ -73,7 +180,8 @@ function renderGameList() {
     card.className = 'game-card';
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
-    card.setAttribute('aria-label', `${title}. ${desc}. Rekord: ${high} Punkte.`);
+    const str = UI_STRINGS[AudioEngine.lang] || UI_STRINGS.de;
+    card.setAttribute('aria-label', `${title}. ${desc}. ${str.highScorePrefix}: ${high} ${str.points}.`);
     card.onclick = () => startGame(game.id);
     card.onkeydown = (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -121,28 +229,118 @@ function toggleLanguage() {
   AudioEngine.saveSettings();
   updateLanguageUI();
   AudioEngine.vibrate(25);
-  AudioEngine.speak(AudioEngine.lang === 'en' ? 'English language selected.' : 'Deutsche Sprache ausgewählt.', true);
+  const str = UI_STRINGS[AudioEngine.lang] || UI_STRINGS.de;
+  AudioEngine.speak(str.langChanged, true);
   renderGameList();
 }
 
 function updateLanguageUI() {
-  const btn = document.getElementById('btn-lang');
-  if (btn) btn.textContent = (AudioEngine.lang === 'en') ? '🇬🇧' : '🇩🇪';
+  const lang = AudioEngine.lang === 'en' ? 'en' : 'de';
+  const str = UI_STRINGS[lang];
 
-  const sel = document.getElementById('set-language-select');
-  if (sel) sel.value = AudioEngine.lang;
+  // Flaggen-Button
+  const btn = document.getElementById('btn-lang');
+  if (btn) btn.textContent = (lang === 'en') ? '🇬🇧' : '🇩🇪';
+
+  // Versions-Badge & Suchleiste
+  const verEl = document.getElementById('app-version');
+  if (verEl) verEl.textContent = str.appVersion;
 
   const searchInput = document.getElementById('game-search');
-  if (searchInput) {
-    searchInput.placeholder = (AudioEngine.lang === 'en') ? '🔍 Search game...' : '🔍 Spiel suchen...';
+  if (searchInput) searchInput.placeholder = str.searchPlaceholder;
+
+  // Kategorien-Reiter
+  const tabAll = document.getElementById('tab-all');
+  if (tabAll) tabAll.textContent = str.tabAll;
+  const tabAction = document.getElementById('tab-action');
+  if (tabAction) tabAction.textContent = str.tabAction;
+  const tabLogic = document.getElementById('tab-logic');
+  if (tabLogic) tabLogic.textContent = str.tabLogic;
+  const tabNav = document.getElementById('tab-nav');
+  if (tabNav) tabNav.textContent = str.tabNav;
+  const tabSpeech = document.getElementById('tab-speech');
+  if (tabSpeech) tabSpeech.textContent = str.tabSpeech;
+  const tabSim = document.getElementById('tab-sim');
+  if (tabSim) tabSim.textContent = str.tabSim;
+
+  // Spiel HUD
+  const btnHudMenu = document.getElementById('btn-hud-menu');
+  if (btnHudMenu) btnHudMenu.textContent = str.btnMenu;
+  const btnHudHelp = document.getElementById('btn-hud-help');
+  if (btnHudHelp) btnHudHelp.textContent = str.btnHelp;
+  const hudStatus = document.getElementById('hud-status');
+  if (hudStatus && (!activeGame || hudStatus.textContent.includes('Kopfhörer') || hudStatus.textContent.includes('Headphones'))) {
+    hudStatus.textContent = str.hudStatus;
   }
+
+  // Touch-Tasten Labels
+  const tlUp = document.getElementById('touch-label-up');
+  if (tlUp) tlUp.textContent = str.touchUp;
+  const tlDown = document.getElementById('touch-label-down');
+  if (tlDown) tlDown.textContent = str.touchDown;
+  const tlLeft = document.getElementById('touch-label-left');
+  if (tlLeft) tlLeft.textContent = str.touchLeft;
+  const tlRight = document.getElementById('touch-label-right');
+  if (tlRight) tlRight.textContent = str.touchRight;
+  const tlAction = document.getElementById('touch-label-action');
+  if (tlAction) tlAction.textContent = str.touchAction;
+
+  // Header Aktions-Buttons
+  const btnRand = document.getElementById('btn-random');
+  if (btnRand) btnRand.setAttribute('aria-label', str.btnRandomAria);
+  const btnTts = document.getElementById('btn-toggle-tts');
+  if (btnTts) btnTts.setAttribute('aria-label', str.btnTtsAria);
+  const btnFb = document.getElementById('btn-feedback');
+  if (btnFb) btnFb.setAttribute('aria-label', str.btnFeedbackAria);
+  const btnSet = document.getElementById('btn-open-settings');
+  if (btnSet) btnSet.setAttribute('aria-label', str.btnSettingsAria);
+
+  // Einstellungen Modal
+  const sel = document.getElementById('set-language-select');
+  if (sel) sel.value = lang;
+  const setTitle = document.getElementById('settings-title');
+  if (setTitle) setTitle.textContent = str.settingsTitle;
+  const lblLang = document.getElementById('label-language-select');
+  if (lblLang) lblLang.textContent = str.langSelectLabel;
+  const lblVolEff = document.getElementById('label-vol-effects');
+  if (lblVolEff) lblVolEff.textContent = str.volEffectsLabel;
+  const lblVolTts = document.getElementById('label-vol-tts');
+  if (lblVolTts) lblVolTts.textContent = str.volTtsLabel;
+  const lblRate = document.getElementById('label-speech-rate');
+  if (lblRate) lblRate.textContent = str.rateLabel;
+  const lblVibText = document.getElementById('label-vibrate-text');
+  if (lblVibText) lblVibText.textContent = str.vibrateLabel;
+  const btnReset = document.getElementById('btn-reset-highscores');
+  if (btnReset) btnReset.textContent = str.resetHighscores;
+  const btnSave = document.getElementById('btn-save-settings');
+  if (btnSave) btnSave.textContent = str.saveSettings;
+
+  // Feedback Modal
+  const fbTitle = document.getElementById('feedback-title');
+  if (fbTitle) fbTitle.textContent = str.feedbackTitle;
+  const fbDesc = document.getElementById('feedback-desc');
+  if (fbDesc) fbDesc.textContent = str.feedbackDesc;
+  const lblFbSender = document.getElementById('label-fb-sender');
+  if (lblFbSender) lblFbSender.textContent = str.fbSenderLabel;
+  const fbSender = document.getElementById('fb-sender');
+  if (fbSender) fbSender.placeholder = str.fbSenderPlaceholder;
+  const lblFbText = document.getElementById('label-fb-text');
+  if (lblFbText) lblFbText.textContent = str.fbTextLabel;
+  const fbText = document.getElementById('fb-text');
+  if (fbText) fbText.placeholder = str.fbTextPlaceholder;
+  const btnFbSub = document.getElementById('btn-fb-submit');
+  if (btnFbSub) btnFbSub.textContent = str.fbSubmit;
+  const btnFbCan = document.getElementById('btn-fb-cancel');
+  if (btnFbCan) btnFbCan.textContent = str.fbCancel;
 }
 
 function onLanguageSelect(val) {
-  AudioEngine.lang = val;
+  AudioEngine.lang = (val === 'en') ? 'en' : 'de';
   AudioEngine.saveSettings();
   updateLanguageUI();
   renderGameList();
+  const str = UI_STRINGS[AudioEngine.lang] || UI_STRINGS.de;
+  AudioEngine.speak(str.langChanged, true);
 }
 
 function startRandomGame() {
@@ -239,17 +437,38 @@ function setupTouchControls() {
 
   // Tastatursteuerung für Bluetooth-Tastaturen / PC Testing
   window.addEventListener('keydown', (e) => {
-    if (!activeGame) return;
-    if (e.key === 'ArrowUp') triggerAction('up');
-    else if (e.key === 'ArrowDown') triggerAction('down');
-    else if (e.key === 'ArrowLeft') triggerAction('left');
-    else if (e.key === 'ArrowRight') triggerAction('right');
-    else if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      triggerAction('action');
+    if (activeGame) {
+      if (e.key === 'ArrowUp') triggerAction('up');
+      else if (e.key === 'ArrowDown') triggerAction('down');
+      else if (e.key === 'ArrowLeft') triggerAction('left');
+      else if (e.key === 'ArrowRight') triggerAction('right');
+      else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        triggerAction('action');
+      }
+      else if (['1', '2', '3', '4'].includes(e.key)) triggerAction(e.key);
+      else if (e.key === 'Escape') leaveGame();
+    } else {
+      const cards = Array.from(document.querySelectorAll('.game-card'));
+      if (cards.length > 0 && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+        e.preventDefault();
+        if (e.key === 'ArrowDown') focusedGameIndex = (focusedGameIndex + 1) % cards.length;
+        else if (e.key === 'ArrowUp') focusedGameIndex = (focusedGameIndex - 1 + cards.length) % cards.length;
+        cards.forEach((c, i) => {
+          if (i === focusedGameIndex) {
+            c.classList.add('gamepad-focused');
+            c.focus();
+            c.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            const title = (c.querySelector('h3') || {}).textContent || '';
+            const high = (c.querySelector('.game-high') || {}).textContent || '';
+            AudioEngine.playSound('select');
+            AudioEngine.speak(`${title}. ${high}.`, true);
+          } else {
+            c.classList.remove('gamepad-focused');
+          }
+        });
+      }
     }
-    else if (['1', '2', '3', '4'].includes(e.key)) triggerAction(e.key);
-    else if (e.key === 'Escape') leaveGame();
   });
 }
 
@@ -283,6 +502,198 @@ function setupSwipeControls() {
       }
     }
   }, { passive: true });
+}
+
+// --- NATIVE GAMEPAD & CONTROLLER SUPPORT ---
+function initGamepadSupport() {
+  window.addEventListener('gamepadconnected', (e) => {
+    gamepadConnected = true;
+    const badge = document.getElementById('gamepad-badge');
+    if (badge) badge.style.display = 'inline-block';
+    AudioEngine.playSound('confirm');
+    AudioEngine.vibrate(60);
+    const rawName = e.gamepad.id ? e.gamepad.id.split('(')[0].trim() : 'Gamepad';
+    const msg = (AudioEngine.lang === 'en')
+      ? `Controller connected: ${rawName}`
+      : `Controller verbunden: ${rawName}`;
+    AudioEngine.speak(msg, true);
+  });
+
+  window.addEventListener('gamepaddisconnected', (e) => {
+    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    const anyActive = Array.from(gamepads).some(gp => gp && gp.connected);
+    if (!anyActive) {
+      gamepadConnected = false;
+      const badge = document.getElementById('gamepad-badge');
+      if (badge) badge.style.display = 'none';
+      const msg = (AudioEngine.lang === 'en') ? 'Controller disconnected.' : 'Controller getrennt.';
+      AudioEngine.speak(msg, true);
+    }
+  });
+
+  // Gamepad Polling Loop (läuft parallel via requestAnimationFrame)
+  function pollLoop() {
+    pollGamepad();
+    requestAnimationFrame(pollLoop);
+  }
+  requestAnimationFrame(pollLoop);
+}
+
+function pollGamepad() {
+  const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+  let gp = null;
+  for (let i = 0; i < gamepads.length; i++) {
+    if (gamepads[i] && gamepads[i].connected) {
+      gp = gamepads[i];
+      break;
+    }
+  }
+  if (!gp) return;
+
+  const isDown = (btnIdx) => {
+    const b = gp.buttons[btnIdx];
+    return b ? (b.pressed || b.value > 0.5) : false;
+  };
+  const wasDown = (btnIdx) => !!lastGamepadButtons[btnIdx];
+  const justPressed = (btnIdx) => isDown(btnIdx) && !wasDown(btnIdx);
+
+  const axisX = gp.axes && gp.axes[0] !== undefined ? gp.axes[0] : 0;
+  const axisY = gp.axes && gp.axes[1] !== undefined ? gp.axes[1] : 0;
+
+  // D-Pad + Analog-Stick Richtungen (mit Deadzone)
+  const up = isDown(12) || axisY < -0.55;
+  const down = isDown(13) || axisY > 0.55;
+  const left = isDown(14) || axisX < -0.55;
+  const right = isDown(15) || axisX > 0.55;
+
+  const prevUp = !!lastGamepadButtons['up'];
+  const prevDown = !!lastGamepadButtons['down'];
+  const prevLeft = !!lastGamepadButtons['left'];
+  const prevRight = !!lastGamepadButtons['right'];
+
+  const justUp = up && !prevUp;
+  const justDown = down && !prevDown;
+  const justLeft = left && !prevLeft;
+  const justRight = right && !prevRight;
+
+  // Standard Button Mapping:
+  // Button 0 = A / Cross
+  // Button 1 = B / Circle
+  // Button 2 = X / Square
+  // Button 3 = Y / Triangle
+  // Button 4 = L1, Button 5 = R1
+  // Button 8 = Select / Back / Share
+  // Button 9 = Start / Options / Menu
+  const btnA = justPressed(0);
+  const btnB = justPressed(1);
+  const btnX = justPressed(2);
+  const btnY = justPressed(3);
+  const btnL1 = justPressed(4);
+  const btnR1 = justPressed(5);
+  const btnSelect = justPressed(8);
+  const btnStart = justPressed(9);
+
+  if (activeGame) {
+    // --- STEUERUNG IM AKTIVEN SPIEL ---
+    if (justUp) triggerAction('up');
+    if (justDown) triggerAction('down');
+    if (justLeft) triggerAction('left');
+    if (justRight) triggerAction('right');
+
+    if (btnA) triggerAction('action');
+    if (btnX) triggerAction('1');
+    if (btnL1) triggerAction('1');
+    if (btnR1) triggerAction('2');
+
+    if (btnY) repeatTutorial();
+    if (btnB || btnSelect || btnStart) leaveGame();
+  } else {
+    // --- NAVIGATION IM MENÜ ---
+    const modalSettings = document.getElementById('modal-settings');
+    const modalFeedback = document.getElementById('modal-feedback');
+    const isModalOpen = (modalSettings && modalSettings.style.display !== 'none') ||
+                        (modalFeedback && modalFeedback.style.display !== 'none');
+
+    if (isModalOpen) {
+      if (btnB || btnSelect) {
+        if (modalSettings) closeSettings();
+        if (modalFeedback) closeFeedbackModal();
+      }
+    } else {
+      const cards = Array.from(document.querySelectorAll('.game-card'));
+      if (cards.length > 0) {
+        let changed = false;
+        if (justDown) {
+          focusedGameIndex = (focusedGameIndex + 1) % cards.length;
+          changed = true;
+        } else if (justUp) {
+          focusedGameIndex = (focusedGameIndex - 1 + cards.length) % cards.length;
+          changed = true;
+        }
+
+        if (changed) {
+          cards.forEach((c, i) => {
+            if (i === focusedGameIndex) {
+              c.classList.add('gamepad-focused');
+              c.focus();
+              c.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+              const titleEl = c.querySelector('h3');
+              const highEl = c.querySelector('.game-high');
+              const title = titleEl ? titleEl.textContent : '';
+              const high = highEl ? highEl.textContent : '';
+              AudioEngine.playSound('select');
+              AudioEngine.vibrate(20);
+              AudioEngine.speak(`${title}. ${high}.`, true);
+            } else {
+              c.classList.remove('gamepad-focused');
+            }
+          });
+        }
+
+        // A-Taste startet das fokussierte Spiel
+        if (btnA) {
+          const focusedCard = cards[focusedGameIndex];
+          if (focusedCard) {
+            focusedCard.click();
+          }
+        }
+
+        // D-Pad Links / Rechts oder Schultertasten wechseln die Kategorie
+        const categories = ['all', 'action', 'logic', 'nav', 'speech', 'sim'];
+        if (btnL1 || justLeft) {
+          let currIdx = categories.indexOf(currentCategory);
+          currIdx = (currIdx - 1 + categories.length) % categories.length;
+          selectCategory(categories[currIdx]);
+          focusedGameIndex = 0;
+        } else if (btnR1 || justRight) {
+          let currIdx = categories.indexOf(currentCategory);
+          currIdx = (currIdx + 1) % categories.length;
+          selectCategory(categories[currIdx]);
+          focusedGameIndex = 0;
+        }
+
+        // Y-Taste startet ein Zufallsspiel
+        if (btnY) {
+          startRandomGame();
+        }
+
+        // Start-Taste öffnet Einstellungen
+        if (btnStart) {
+          openSettings();
+        }
+      }
+    }
+  }
+
+  // Tasten-Zustände für nächsten Frame speichern
+  for (let b = 0; b < gp.buttons.length; b++) {
+    lastGamepadButtons[b] = isDown(b);
+  }
+  lastGamepadButtons['up'] = up;
+  lastGamepadButtons['down'] = down;
+  lastGamepadButtons['left'] = left;
+  lastGamepadButtons['right'] = right;
 }
 
 function startVisualizer() {
@@ -340,19 +751,22 @@ function toggleTTS() {
   const icon = document.getElementById('btn-toggle-tts');
   if (icon) icon.textContent = AudioEngine.isTTSActive ? '🔊' : '🔇';
   AudioEngine.vibrate(20);
-  AudioEngine.speak(AudioEngine.isTTSActive ? 'Sprachausgabe eingeschaltet.' : 'Sprachausgabe stummgeschaltet.', true);
+  const str = UI_STRINGS[AudioEngine.lang] || UI_STRINGS.de;
+  AudioEngine.speak(AudioEngine.isTTSActive ? str.ttsOn : str.ttsOff, true);
 }
 
 function openSettings() {
   const modal = document.getElementById('modal-settings');
   if (modal) modal.style.display = 'flex';
-  AudioEngine.speak('Einstellungen geöffnet.');
+  const str = UI_STRINGS[AudioEngine.lang] || UI_STRINGS.de;
+  AudioEngine.speak(str.settingsOpened);
 }
 
 function closeSettings() {
   const modal = document.getElementById('modal-settings');
   if (modal) modal.style.display = 'none';
-  AudioEngine.speak('Einstellungen gespeichert.');
+  const str = UI_STRINGS[AudioEngine.lang] || UI_STRINGS.de;
+  AudioEngine.speak(str.settingsClosed);
 }
 
 function updateAudioSettings() {

@@ -6,8 +6,9 @@ class MobileAudioEngine {
     this.ttsVolume = 0.9;
     this.speechRate = 1.1;
     this.vibrationEnabled = true;
+    // Automatische Spracherkennung der Systemsprache: 'de' für Deutsch, ansonsten 'en' (Englisch)
     const navLang = (typeof navigator !== 'undefined' && ((navigator.languages && navigator.languages[0]) || navigator.language)) || '';
-    this.lang = navLang.toLowerCase().startsWith('en') ? 'en' : 'de';
+    this.lang = navLang.toLowerCase().startsWith('de') ? 'de' : 'en';
     this.isTTSActive = true;
     this.audioCache = {};
     this.loops = {};
@@ -205,9 +206,112 @@ class MobileAudioEngine {
     }
   }
 
+  // Übersetzt Ingame-Meldungen dynamisch ins Englische, wenn lang === 'en'
+  translatePhrase(text) {
+    if (!text || this.lang !== 'en') return text;
+    let s = text;
+    s = s.replace(/Treffer!\s*(\d+)\s*Punkte\./gi, 'Hit! $1 points.');
+    s = s.replace(/Treffer:\s*(\d+)\s*Punkte\./gi, 'Hit: $1 points.');
+    s = s.replace(/Gefangen!\s*(\d+)\s*Punkte\./gi, 'Caught! $1 points.');
+    s = s.replace(/Volltreffer Mitte!\s*(\d+)\s*Punkte\./gi, 'Direct bullseye! $1 points.');
+    s = s.replace(/Volltreffer ins Gold!\s*(\d+)\s*Punkte\./gi, 'Bullseye in gold! $1 points.');
+    s = s.replace(/(\d+)\s*Millisekunden!\s*(\d+)\s*Punkte\./gi, '$1 milliseconds! $2 points.');
+    s = s.replace(/Punkte:\s*(\d+)/gi, 'Score: $1');
+    s = s.replace(/Punkte/gi, 'Points');
+    s = s.replace(/Rekord:\s*(\d+)/gi, 'High score: $1');
+
+    const dict = {
+      'Falsche Seite!': 'Wrong side!',
+      'Zu weit links!': 'Too far left!',
+      'Zu weit rechts!': 'Too far right!',
+      'Bombe entschärft! Perfekt.': 'Bomb defused! Perfect.',
+      'Bumm! Falscher Draht. Nächster Versuch.': 'Boom! Wrong wire. Next attempt.',
+      'Erwischt! +200': 'Caught! +200',
+      'Verpasst!': 'Missed!',
+      'Perfekt im Takt!': 'Perfect beat!',
+      'Knapp daneben!': 'Close miss!',
+      'Achtung...': 'Attention...',
+      'Zu früh gedrückt!': 'Pressed too early!',
+      'Verfehlt!': 'Missed!',
+      'Schmetterball! +200': 'Smash hit! +200',
+      'Klatsch! Mücke erwischt.': 'Smack! Mosquito caught.',
+      'Crash! Kollision.': 'Crash! Collision.',
+      'Vorsicht! Auto erwischt.': 'Watch out! Hit by a car.',
+      'Sicher gehüpft! +200': 'Safe jump! +200',
+      'Bullseye! 501 Punkte!': 'Bullseye! 501 points!',
+      'Feind abgewehrt!': 'Enemy repelled!',
+      'Heruntergefallen!': 'Fell down!',
+      'Gleichgewicht verloren!': 'Lost balance!',
+      'Hürde übersprungen!': 'Hurdle cleared!',
+      'Gestrauchelt!': 'Stumbled!',
+      'Teil fehlerhaft sortiert!': 'Defective part sorted!',
+      'Ausschuss durchgelassen!': 'Defect slipped through!',
+      'Perfekt gefangen!': 'Perfect catch!',
+      'Ball fallen gelassen!': 'Dropped the ball!',
+      'Volltreffer! Ziel eliminiert.': 'Direct hit! Target eliminated.',
+      'Schlag pariert!': 'Strike parried!',
+      'Baum gefällt!': 'Tree felled!',
+      'Treffer auf Schiff!': 'Ship hit!',
+      'Wasser! Daneben.': 'Splash! Miss.',
+      'Schiff versenkt!': 'Ship sunken!',
+      'Bestellung serviert!': 'Order served!',
+      'Tablett umgeworfen!': 'Tray knocked over!',
+      'Zutritt gewährt!': 'Entry granted!',
+      'Du kommst hier nicht rein!': 'You are not getting in!',
+      'Paar gefunden!': 'Match found!',
+      'Kein Paar!': 'No match!',
+      'Tresor geöffnet!': 'Safe cracked!',
+      'Falsche Kombination!': 'Wrong combination!',
+      'Code geknackt!': 'Code cracked!',
+      'Höher!': 'Higher!',
+      'Tiefer!': 'Lower!',
+      'Richtig geraten!': 'Guessed right!',
+      'Richtig gerechnet!': 'Correct math!',
+      'Falsches Ergebnis!': 'Wrong answer!',
+      'Frequenz erwischt!': 'Frequency locked!',
+      'Stufe erklommen!': 'Step climbed!',
+      'Abgestürzt!': 'Fell down!',
+      'Mikrofon gefunden!': 'Microphone found!',
+      'Ausgang erreicht!': 'Exit reached!',
+      'Wand berührt!': 'Hit a wall!',
+      'Signal geortet!': 'Signal located!',
+      'Tier gefunden!': 'Animal found!',
+      'Richtiges Tor gewählt!': 'Right door chosen!',
+      'Sackgasse!': 'Dead end!',
+      'Torpedo abgewehrt!': 'Torpedo deflected!',
+      'Weiche richtig gestellt!': 'Switch properly set!',
+      'Entgleist!': 'Derailed!',
+      'Hauptstadt richtig!': 'Correct capital!',
+      'Hauptstadt falsch!': 'Wrong capital!',
+      'Morsezeichen richtig!': 'Morse code correct!',
+      'Morsezeichen falsch!': 'Morse code wrong!',
+      'Boss getroffen!': 'Boss hit!',
+      'Strike! Alle Pins abgeräumt.': 'Strike! All pins cleared.',
+      'Spare!': 'Spare!',
+      'Rinne!': 'Gutter ball!',
+      'Gewonnen!': 'You won!',
+      'Verloren!': 'You lost!',
+      'Unentschieden!': 'Tie game!',
+      'Jackpot!': 'Jackpot!',
+      'Niete!': 'No win!',
+      'Mine explodiert!': 'Mine exploded!',
+      'Feld sicher aufgedeckt!': 'Cell safely revealed!'
+    };
+
+    for (const [k, v] of Object.entries(dict)) {
+      if (s === k || s.startsWith(k)) {
+        s = s.replace(k, v);
+      }
+    }
+    return s;
+  }
+
   // Barrierefreie Sprachausgabe (TalkBack ARIA Live + Web Speech)
   speak(text, interrupt = false) {
     if (!text) return;
+    if (this.lang === 'en') {
+      text = this.translatePhrase(text);
+    }
 
     // 1. ARIA Live für Android TalkBack & Screenreader aktualisieren
     const announcer = document.getElementById('sr-announcer');
@@ -235,9 +339,25 @@ class MobileAudioEngine {
     window.speechSynthesis.speak(utter);
   }
 
-  // Taktiles Feedback (Capacitor Haptics oder Navigator Vibrate)
+  // Taktiles Feedback (Capacitor Haptics, Gamepad Rumble & Navigator Vibrate)
   vibrate(ms = 25) {
     if (!this.vibrationEnabled) return;
+
+    // Gamepad Controller Rumble / Vibration
+    try {
+      const gamepads = (navigator.getGamepads) ? navigator.getGamepads() : [];
+      for (const gp of gamepads) {
+        if (gp && gp.vibrationActuator && gp.vibrationActuator.playEffect) {
+          const dur = Math.min(300, Math.max(40, Array.isArray(ms) ? ms[0] : ms));
+          gp.vibrationActuator.playEffect('dual-rumble', {
+            startDelay: 0,
+            duration: dur,
+            weakMagnitude: 0.6,
+            strongMagnitude: 0.8
+          }).catch(() => {});
+        }
+      }
+    } catch (e) {}
 
     // Capacitor Haptics Plugin Check
     if (window.Capacitor && window.Capacitor.isPluginAvailable && window.Capacitor.isPluginAvailable('Haptics')) {
