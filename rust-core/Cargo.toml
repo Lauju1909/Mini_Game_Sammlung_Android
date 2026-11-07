@@ -1,0 +1,14 @@
+[package]
+name = "lauju_app_core"
+version = "2.0.0"
+edition = "2021"
+description = "Memory-safe native Rust core for Audio Mini Games (de.lauri.minigames)"
+
+[lib]
+name = "lauju_app_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+jni = "0.21"
+sha2 = "0.10"
+hex = "0.4"

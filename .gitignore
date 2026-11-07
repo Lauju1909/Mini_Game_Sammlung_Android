@@ -1,4 +1,4 @@
-﻿# Node / NPM
+# Node / NPM
 node_modules/
 package-lock.json.bak
 npm-debug.log*
@@ -32,3 +32,6 @@ Thumbs.db
 
 # General logs
 *.log
+
+rust-core/target/
+android/app/src/main/jniLibs/
